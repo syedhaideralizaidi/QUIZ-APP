@@ -1,0 +1,52 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+<div class="container">
+<hr>
+  <h3 class="mb-4">Teacher Dashboard</h3>
+    <hr>
+<br>
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">Create Quiz</h2>
+          <p class="card-text">Create a new quiz for your students.</p>
+          <a href="{% url 'quiz-create' %}" class="btn btn-success">Create Quiz</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">View Quiz History</h2>
+          <p class="card-text">View the history of all the quizzes you have created.</p>
+          <a href="#" class="btn btn-danger">View Quiz History</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">Set Profile</h2>
+          <p class="card-text">Update your profile information.</p>
+          <a href="{% url 'update-teacher' request.user.id %}" class="btn btn-warning">Set Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+</style>
+
+{% endblock %}

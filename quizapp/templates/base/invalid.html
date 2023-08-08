@@ -1,0 +1,12 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+<hr>
+    <h3>{{ title }}</h3>
+
+    <p>{{ message }}</p>
+
+    <hr>
+    <button type="button" class="btn btn-danger"><a href="{% url 'home' %}" style="color: whitesmoke">Back</a></button>
+
+{% endblock %}

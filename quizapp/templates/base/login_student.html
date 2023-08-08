@@ -1,0 +1,15 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+<hr>
+    <h4>Login Student</h4>
+    <hr>
+    <form method="POST" action="{% url 'student-login' %}">
+        {% csrf_token %}
+        <label for="name">Username: </label>
+        <input type="text" name="username" required><br><br>
+        <label for="password">Password: </label>
+        <input type="password" name="password" required><br><br>
+        <button type="submit" class="btn btn-warning">Login</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'templates/base/main.html' %}
+{% block content %}
+    <hr>
+    <h4>Teacher - Student</h4>
+    <hr>
+    <br>
+    <form id="product-form" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+    <hr>
+      <button type="submit" class="btn btn-warning">Update Student</button>
+    </form>
+
+{% endblock content %}

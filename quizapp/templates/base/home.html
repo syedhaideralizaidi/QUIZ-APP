@@ -1,0 +1,74 @@
+{#{% extends 'templates/base/main.html' %}#}
+{#{% block content %}#}
+{#    <div class="flex-row">#}
+{#<center>#}
+{#    <div class="span6">#}
+{#        <button type="button" class="btn btn-warning" ><a href="{% url 'student-login' %}" style="color: black">Login as Student</a></button>#}
+{#        <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'student-signup' %}" style="color: black">No account? Sign Up as Student</a></button>#}
+{#        </div>#}
+{#    <hr>#}
+{#        <div class="span6">#}
+{#            <button type="button" class="btn btn-danger"><a href="{% url 'teacher-login' %}" style="color: whitesmoke">Login as Teacher</a></button>#}
+{#            <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'teacher-signup' %}" style="color: black">No account? Sign Up as Teacher</a></button>#}
+{#            </div>#}
+{#    </center>#}
+{#</div>#}
+{##}
+{#{% endblock %}#}
+{##}
+{##}
+{##}
+
+
+
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+
+<div class="container">
+<hr>
+    <center>
+  <h3 class="mb-4">Home</h3></center>
+    <hr>
+<br>
+
+  <div class="row">
+    <div class="col-md-6 mb-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">Student</h2>
+          <p class="card-text">Login as Student</p>
+          <a href="{% url 'student-login' %}" class="btn btn-success">Login</a>
+            <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'student-signup' %}" style="color: black">No account? Sign-up as Student</a></button>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">Teacher</h2>
+          <p class="card-text">Login as Teacher</p>
+          <a href="{% url 'teacher-login' %}" class="btn btn-danger">Login</a>
+            <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'teacher-signup' %}" style="color: black">No account? Sign Up as Teacher</a></button>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+</style>
+
+{% endblock %}
