@@ -1,0 +1,55 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+<hr>
+<h4>Quiz Creation</h4>
+<hr>
+<br>
+<form method="post"  action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div id="question-formset">
+    <hr>
+    <center><i>
+    <h4>Questions</h4></i></center>
+    <hr>
+        {{ question_formset.management_form }}
+        {% for form in question_formset %}
+            <div class="question-formset">
+                {{ form.as_p }}
+                <button type="button" class="remove-question btn btn-danger">Remove</button>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-question" class="btn btn-primary">Add</button>
+    <button type="submit" class="btn btn-warning" value="submit">Submit</button>
+</form>
+<hr>
+<button type="button" class="btn btn-danger"><a href="{% url 'dashboard-teacher' %}" style="color: whitesmoke">Go back</a></button>
+<hr>
+<br>
+
+{% with question_formset.empty_form as empty_form %}
+    <div id="empty-form" style="display:none">
+        {{ empty_form.as_p }}
+        <button type="button" class="remove-question btn btn-danger">Remove</button>
+        <hr>
+    </div>
+{% endwith %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var formCount = {{ question_formset.total_form_count }};
+        $('#add-question').click(function() {
+            var form = $('#empty-form').html().replace(/__prefix__/g, formCount);
+            $('#question-formset').append(form);
+            formCount++;
+        });
+        $(document).on('click', '.remove-question', function() {
+            $(this).closest('.question-formset').remove();
+        });
+    });
+</script>
+
+{% endblock %}

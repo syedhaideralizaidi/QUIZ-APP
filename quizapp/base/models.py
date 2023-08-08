@@ -35,9 +35,6 @@ class User(AbstractUser):
 
 
 
-# class MyQuizzes(models.Manager):
-#     def get_queryset(self):
-#         return super().get_queryset().filter(user_id = self.request.user)
 
 
 class Quiz(models.Model):
@@ -60,6 +57,7 @@ class Quiz(models.Model):
     question_numbers = models.IntegerField(default = 1)
     required_score = models.IntegerField()
     created = models.DateTimeField(auto_now_add = True)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_quizzes', default = 2)
     objects = models.Manager()
 
     def __str__(self):
@@ -70,7 +68,7 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name = 'quiz_question')
-    question_text = models.TextField(max_length = 255)
+    question_text = models.CharField(max_length = 255)
     answer_options = models.CharField(max_length=255)
     correct_answer = models.CharField(max_length = 255)
     score = models.IntegerField()
@@ -101,8 +99,25 @@ class QuizScore(models.Model):
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     score = models.IntegerField(null = False, blank = False)
     timestamp = models.DateTimeField(auto_now = True)
-    status = models.BooleanField(default = False)
+    status_pass = models.BooleanField(default = False)
     objects = models.Manager()
     leaders = LeaderScores()
     def __str__(self):
         return f"{self.user_id} - {self.quiz_id} - {self.score}"
+
+
+class Student(User):
+    quizzes = models.ManyToManyField('Quiz', related_name='students')
+
+    class Meta:
+        verbose_name = 'Student_from_User'
+
+class QuizAssignment(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    questions = models.ForeignKey(Question, on_delete = models.SET_NULL, null = True)
+    completed = models.BooleanField(default=False)
+    class Meta:
+        verbose_name = 'Quiz_Assignments'
+    def __str__(self):
+        return f"{self.student} - {self.quiz}"

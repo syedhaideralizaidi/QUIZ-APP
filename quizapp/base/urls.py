@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import formset_view
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -20,6 +21,9 @@ urlpatterns = [
     path('leaders', login_required(views.LeaderScores.as_view()), name = 'leaders'),
     path('myscores', login_required(views.MyScores.as_view()), name = 'myscores'),
     path('quiz_history', login_required(views.QuizHistoryViewStudent.as_view()), name = 'quiz-history'),
+    path('pending-quiz', login_required(views.PendingQuizzes.as_view()), name = 'pending-quiz'),
+
+    path('create', login_required(formset_view.QuizCreateView.as_view()), name = 'quiz'),
 
 
 ]

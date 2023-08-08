@@ -190,7 +190,7 @@ class UpdateStudentProfile(UpdateView):
 class LeaderScores(TemplateView):
     template_name = 'templates/base/leader_scores.html'
 
-    def get_context_data(self , **kwargs) :
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["leader_scores"] = QuizScore.leaders.all()
         return context
@@ -198,7 +198,7 @@ class LeaderScores(TemplateView):
 class MyScores(TemplateView):
     template_name = 'templates/base/student_scores.html'
 
-    def get_context_data(self , **kwargs) :
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         student = QuizScore.objects.filter(user_id = self.request.user.pk)
         context["my_scores"] = student
@@ -206,6 +206,14 @@ class MyScores(TemplateView):
 
 class QuizHistoryViewStudent(TemplateView):
     template_name = 'templates/base/quiz_history.html'
+    def get_context_data(self , **kwargs):
+        context = super().get_context_data(**kwargs)
+        student = QuizScore.objects.filter(user_id = self.request.user.pk)
+        context["my_quizzes"] = student
+        return context
+
+class PendingQuizzes(TemplateView):
+    template_name = 'templates/base/pending_quiz.html'
     def get_context_data(self , **kwargs):
         context = super().get_context_data(**kwargs)
         student = QuizScore.objects.filter(user_id = self.request.user.pk)

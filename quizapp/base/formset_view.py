@@ -1,0 +1,96 @@
+from django.shortcuts import redirect
+from django.views.generic.edit import CreateView
+from django.urls import reverse
+from .models import Quiz
+from .forms import QuizFormSet, QuizForm
+
+
+class QuizCreateView(CreateView):
+    model = Quiz
+    form_class = QuizForm
+    template_name = 'templates/base/quiz_question_form.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['question_formset'] = QuizFormSet(self.request.POST)
+        else:
+            context['question_formset'] = QuizFormSet()
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        quiz = form.save(commit = False)
+        quiz.teacher = self.request.user
+        quiz.required_score = 30
+        quiz.total_score = 100
+        quiz.save()
+        question_formset = context['question_formset']
+        if question_formset.is_valid():
+            self.object = form.save()
+            question_formset.instance = self.object
+            question_formset.save()
+            return redirect(reverse("dashboard-student"))
+        else:
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data()
+        question_formset = context['question_formset']
+        return self.render_to_response(
+            self.get_context_data(form=form, question_formset=question_formset)
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # def get_context_data(self, **kwargs):
+    #     data = super().get_context_data(**kwargs)
+    #     if self.request.POST:
+    #         data['questions'] = QuestionFormSet(self.request.POST)
+    #     else:
+    #         data['questions'] = QuestionFormSet()
+    #     return data
+    #
+    # def form_valid(self, form):
+    #     context = self.get_context_data()
+    #     questions = context['questions']
+    #     quiz = form.save(commit=False)
+    #     quiz.teacher = self.request.user
+    #     quiz.save()
+    #     if questions.is_valid():
+    #         questions.instance = quiz
+    #         questions.save()
+    #     return super().form_valid(form)
+
+
+
+
+from django.views.generic.edit import CreateView, UpdateView
+from django.urls import reverse_lazy
+from .models import Quiz, QuizAssignment
+
+# class QuizCreateView(CreateView):
+#     model = Quiz
+#     template_name = 'quiz_create.html'
+#     fields = ['title', 'description', 'time_limit', 'difficulty_level', 'category', 'total_score', 'question_numbers', 'required_score']
+#
+#     def form_valid(self, form):
+#         quiz = form.save(commit=False)
+#         quiz.teacher = self.request.user
+#         quiz.save()
+#         students = Student.objects.all()
+#         for student in students:
+#             QuizAssignment.objects.create(quiz=quiz, student=student)
+#         return super().form_valid(form)
