@@ -21,7 +21,7 @@
         <div class="card-body">
           <h2 class="card-title">View Quiz History</h2>
           <p class="card-text">View the history of all the quizzes you have taken.</p>
-          <a href="#" class="btn btn-danger">View Quiz History</a>
+          <a href="{% url 'quiz-history' %}" class="btn btn-danger">View Quiz History</a>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
         <div class="card-body">
           <h2 class="card-title">Leaderboard</h2>
           <p class="card-text">View the top scorers.</p>
-          <a href="#" class="btn btn-success">View Top Scorers</a>
+          <a href="{% url 'leaders' %}" class="btn btn-success">View Top Scorers</a>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
         <div class="card-body">
           <h2 class="card-title">Your Scores</h2>
           <p class="card-text">View your scorers.</p>
-          <a href="#" class="btn btn-danger">View Your Scorers</a>
+          <a href="{% url 'myscores' %}" class="btn btn-danger">View Your Scorers</a>
         </div>
       </div>
     </div>

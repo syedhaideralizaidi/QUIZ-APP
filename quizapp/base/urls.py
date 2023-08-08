@@ -16,7 +16,10 @@ urlpatterns = [
     path('update_teacher/<str:pk>/', login_required(views.UpdateTeacherProfile.as_view()), name = 'update-teacher'),
     path('update_student/<str:pk>/', login_required(views.UpdateStudentProfile.as_view()), name = 'update-student'),
     path('quiz_create', login_required(views.QuizCreation.as_view()), name = 'quiz-create'),
-
+    path('question_create', login_required(views.QuestionsCreation.as_view()), name = 'question-create'),
+    path('leaders', login_required(views.LeaderScores.as_view()), name = 'leaders'),
+    path('myscores', login_required(views.MyScores.as_view()), name = 'myscores'),
+    path('quiz_history', login_required(views.QuizHistoryViewStudent.as_view()), name = 'quiz-history'),
 
 
 ]

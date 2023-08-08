@@ -8,7 +8,7 @@ from django.utils.encoding import force_bytes
 from django.views.generic import CreateView , TemplateView , UpdateView
 
 from .helpers import send_forgot_password_mail
-from .models import User, Quiz
+from .models import User , Quiz , Question , QuizScore
 
 
 def home(request):
@@ -131,6 +131,11 @@ class QuizCreation(CreateView):
     fields = '__all__'
     success_url = '/dashboard_teacher'
 
+class QuestionsCreation(CreateView):
+    model = Question
+    fields = '__all__'
+    success_url = '/dashboard_teacher'
+
 class UpdateTeacherProfile(UpdateView):
     template_name = 'templates/base/update_teacher.html'
     model = User
@@ -181,3 +186,28 @@ class UpdateStudentProfile(UpdateView):
         except Exception as e:
             return HttpResponseBadRequest("An error occurred")
         return super().form_valid(form)
+
+class LeaderScores(TemplateView):
+    template_name = 'templates/base/leader_scores.html'
+
+    def get_context_data(self , **kwargs) :
+        context = super().get_context_data(**kwargs)
+        context["leader_scores"] = QuizScore.leaders.all()
+        return context
+
+class MyScores(TemplateView):
+    template_name = 'templates/base/student_scores.html'
+
+    def get_context_data(self , **kwargs) :
+        context = super().get_context_data(**kwargs)
+        student = QuizScore.objects.filter(user_id = self.request.user.pk)
+        context["my_scores"] = student
+        return context
+
+class QuizHistoryViewStudent(TemplateView):
+    template_name = 'templates/base/quiz_history.html'
+    def get_context_data(self , **kwargs):
+        context = super().get_context_data(**kwargs)
+        student = QuizScore.objects.filter(user_id = self.request.user.pk)
+        context["my_quizzes"] = student
+        return context

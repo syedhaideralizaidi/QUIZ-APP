@@ -1,6 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Group, Permission, UserManager
+class StudentManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_student = True)
 
+class TeacherManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_teacher = True)
 
 class User(AbstractUser):
     username = models.CharField(max_length=255, unique=True, null = False, blank = False)
@@ -8,6 +14,9 @@ class User(AbstractUser):
     password = models.CharField(max_length=128)
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
+    objects = UserManager()
+    students = StudentManager()
+    teachers = TeacherManager()
 
     REQUIRED_FIELDS = []
 
@@ -23,6 +32,13 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+
+# class MyQuizzes(models.Manager):
+#     def get_queryset(self):
+#         return super().get_queryset().filter(user_id = self.request.user)
+
 
 class Quiz(models.Model):
     difficulty_choices = [
@@ -44,6 +60,7 @@ class Quiz(models.Model):
     question_numbers = models.IntegerField(default = 1)
     required_score = models.IntegerField()
     created = models.DateTimeField(auto_now_add = True)
+    objects = models.Manager()
 
     def __str__(self):
         return self.title
@@ -74,11 +91,18 @@ class Answer(models.Model):
         return f"Question :{self.question.question_text} Correct Answer: {self.is_correct}"
 
 
+class LeaderScores(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().order_by('-score')[:5]
+
+
 class QuizScore(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     score = models.IntegerField(null = False, blank = False)
     timestamp = models.DateTimeField(auto_now = True)
-
+    status = models.BooleanField(default = False)
+    objects = models.Manager()
+    leaders = LeaderScores()
     def __str__(self):
         return f"{self.user_id} - {self.quiz_id} - {self.score}"

@@ -1,0 +1,47 @@
+
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+
+<div class="container">
+<hr>
+    <center>
+  <h3 class="mb-4">Your Quizzes</h3></center>
+    <hr>
+<br>
+
+  <div class="row">
+      {% for quiz in my_quizzes %}
+    <div class="col-md-6 mb-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">{{ quiz.quiz_id.title }}</h2>
+            <hr>
+            <p class="card-text"><i>Your Score: </i> <strong> {{ quiz.score }}</strong></p>
+            <p class="card-text"><i>Difficulty Level: </i> <strong> {{ quiz.quiz_id.difficulty_level }}</strong></p>
+            <p class="card-text"><i>Total Questions: </i> <strong> {{ quiz.quiz_id.question_numbers}}</strong></p>
+            <p class="card-text"><i>Status: </i> <strong> {{ quiz.status}}</strong></p>
+
+
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+
+
+  </div>
+</div>
+
+<style>
+.card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+</style>
+
+{% endblock %}
