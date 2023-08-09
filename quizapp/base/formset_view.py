@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 from django.urls import reverse
-from .models import Quiz
+from .models import Quiz , User
 from .forms import QuizFormSet, QuizForm
 
 
@@ -25,6 +25,9 @@ class QuizCreateView(CreateView):
         quiz.total_score = 100
         quiz.save()
         question_formset = context['question_formset']
+        students = User.students.all()
+        for student in students:
+            QuizAssignment.objects.create(quiz=quiz, student=student, completed = False)
         if question_formset.is_valid():
             self.object = form.save()
             question_formset.instance = self.object

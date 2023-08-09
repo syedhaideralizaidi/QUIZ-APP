@@ -1,0 +1,49 @@
+
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+
+<div class="container">
+<hr>
+    <center>
+  <h3 class="mb-4">Your Quizzes</h3></center>
+    <hr>
+<br>
+
+  <div class="row">
+      {% for quiz in my_quizzes %}
+    <div class="col-md-5 mb-5">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">{{ quiz.title }}</h2>
+            <hr>
+            <p class="card-text"><i>Time Limit: </i> <strong> {{ quiz.time_limit }}</strong></p>
+            <p class="card-text"><i>Category: </i> <strong> {{ quiz.category }}</strong></p>
+            <p class="card-text"><i>Difficulty Level: </i> <strong> {{ quiz.difficulty_level}}</strong></p>
+            <p class="card-text"><i>Created at: </i> <strong> {{ quiz.created}}</strong></p>
+
+            <a href="{% url 'quiz-update' quiz.id %}" class="btn btn-warning">View</a>
+            <a href="{% url 'quiz-delete' quiz.id %}" class="btn btn-danger">Delete</a>
+
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+
+
+  </div>
+</div>
+
+<style>
+.card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+</style>
+
+{% endblock %}

@@ -17,10 +17,12 @@ QuizFormSet = inlineformset_factory(
     Question,
     form = QuestionForm,
     fields=('question_text', 'correct_answer', 'score'),
-    extra=0,
+    extra=2,
     #fields = '__all__',
     can_delete=False,
-    max_num = 7,
+    # max_num = 7,
     min_num = 1,
 
 )
+
+

@@ -15,13 +15,14 @@
     <div class="col-md-6 mb-6">
       <div class="card">
         <div class="card-body">
-          <h2 class="card-title">{{ quiz.quiz_id.title }}</h2>
+          <h2 class="card-title">{{ quiz.quiz.title }}</h2>
             <hr>
-            <p class="card-text"><i>Your Score: </i> <strong> {{ quiz.score }}</strong></p>
-            <p class="card-text"><i>Difficulty Level: </i> <strong> {{ quiz.quiz_id.difficulty_level }}</strong></p>
-            <p class="card-text"><i>Total Questions: </i> <strong> {{ quiz.quiz_id.question_numbers}}</strong></p>
-            <p class="card-text"><i>Status: </i> <strong> {{ quiz.status_pass}}</strong></p>
+            <p class="card-text"><i>Difficulty Level: </i> <strong> {{ quiz.quiz.difficulty_level }}</strong></p>
+            <p class="card-text"><i>Category: </i> <strong> {{ quiz.quiz.category}}</strong></p>
+            <p class="card-text"><i>Time: </i> <strong> {{ quiz.quiz.time_limit}} min</strong></p>
+            <p class="card-text"><i>Created on: </i> <strong> {{ quiz.quiz.created}}</strong></p>
 
+        <a href="{% url 'quiz-start' quiz.quiz.id %}" style="color: whitesmoke" class="btn btn-success">Start Quiz</a>
 
         </div>
       </div>

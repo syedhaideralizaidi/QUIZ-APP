@@ -21,7 +21,7 @@
         <div class="card-body">
           <h2 class="card-title">View Quiz History</h2>
           <p class="card-text">View the history of all the quizzes you have created.</p>
-          <a href="#" class="btn btn-danger">View Quiz History</a>
+          <a href="{% url 'quiz-history-teacher' %}" class="btn btn-danger">View Quiz History</a>
         </div>
       </div>
     </div>
@@ -31,16 +31,6 @@
           <h2 class="card-title">Set Profile</h2>
           <p class="card-text">Update your profile information.</p>
           <a href="{% url 'update-teacher' request.user.id %}" class="btn btn-warning">Set Profile</a>
-        </div>
-      </div>
-    </div>
-
-        <div class="col-md-4 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <h2 class="card-title">Create Questions</h2>
-          <p class="card-text">Create your new questions for the quizzes.</p>
-          <a href="{% url 'question-create' %}" class="btn btn-success">Create Questions</a>
         </div>
       </div>
     </div>

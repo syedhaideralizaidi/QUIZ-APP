@@ -1,14 +1,18 @@
 from base64 import urlsafe_b64encode
+from datetime import datetime , timedelta
+
 from django.contrib.auth import login, logout
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse , HttpResponseBadRequest
 from django.shortcuts import render , redirect
-from django.urls import reverse
+from django.urls import reverse , reverse_lazy
 from django.utils.encoding import force_bytes
-from django.views.generic import CreateView , TemplateView , UpdateView
+from django.views import View
+from django.views.generic import CreateView , TemplateView , UpdateView , DeleteView , FormView
 
+from .forms import QuestionForm
 from .helpers import send_forgot_password_mail
-from .models import User , Quiz , Question , QuizScore
+from .models import User , Quiz , Question , QuizScore , QuizAssignment
 
 
 def home(request):
@@ -131,6 +135,15 @@ class QuizCreation(CreateView):
     fields = '__all__'
     success_url = '/dashboard_teacher'
 
+class QuizUpdateDetail(UpdateView):
+    model = Quiz
+    fields = ['title', 'description', 'time_limit', 'difficulty_level', 'category', 'required_score']
+    success_url = '/quiz_history_teacher'
+
+class QuizDelete(DeleteView):
+    model = Quiz
+    success_url = '/quiz_history_teacher'
+
 class QuestionsCreation(CreateView):
     model = Question
     fields = '__all__'
@@ -206,16 +219,40 @@ class MyScores(TemplateView):
 
 class QuizHistoryViewStudent(TemplateView):
     template_name = 'templates/base/quiz_history.html'
-    def get_context_data(self , **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         student = QuizScore.objects.filter(user_id = self.request.user.pk)
         context["my_quizzes"] = student
         return context
 
+class QuizHistoryViewTeacher(TemplateView):
+    template_name = 'templates/base/quiz_history_teacher.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = Quiz.objects.filter(teacher = self.request.user.pk)
+        context["my_quizzes"] = teacher
+        return context
+
 class PendingQuizzes(TemplateView):
     template_name = 'templates/base/pending_quiz.html'
-    def get_context_data(self , **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        student = QuizScore.objects.filter(user_id = self.request.user.pk)
+        student = QuizAssignment.objects.filter(student = self.request.user.pk, completed = False)
         context["my_quizzes"] = student
         return context
+
+class StartQuiz(View):
+    template_name = 'templates/base/start_quiz.html'
+    def get(self, request, pk = None):
+        id = pk
+        assigned_quiz = Quiz.objects.get(id = id)
+        teacher = assigned_quiz.teacher
+        date = datetime.now()
+        questions = Question.objects.filter(quiz_id = assigned_quiz.pk)
+        inital = {'teacher': teacher, 'quiz': assigned_quiz, 'date':date}
+        return render(request, 'templates/base/start_quiz.html', inital)
+
+    def post(self, request, pk = None):
+        id = pk
+        return redirect("dashboard-student")
+

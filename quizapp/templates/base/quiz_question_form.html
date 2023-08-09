@@ -17,7 +17,7 @@
         {% for form in question_formset %}
             <div class="question-formset">
                 {{ form.as_p }}
-                <button type="button" class="remove-question btn btn-danger">Remove</button>
+               <button type="button" class="remove-question btn btn-danger">X</button>
                 <hr>
             </div>
         {% endfor %}
@@ -33,7 +33,7 @@
 {% with question_formset.empty_form as empty_form %}
     <div id="empty-form" style="display:none">
         {{ empty_form.as_p }}
-        <button type="button" class="remove-question btn btn-danger">Remove</button>
+        <button type="button" class="remove-question btn btn-danger">X</button>
         <hr>
     </div>
 {% endwith %}

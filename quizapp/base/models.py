@@ -106,16 +106,16 @@ class QuizScore(models.Model):
         return f"{self.user_id} - {self.quiz_id} - {self.score}"
 
 
-class Student(User):
-    quizzes = models.ManyToManyField('Quiz', related_name='students')
-
-    class Meta:
-        verbose_name = 'Student_from_User'
+# class Student(User):
+#     quizzes = models.ManyToManyField('Quiz', related_name='students')
+#
+#     class Meta:
+#         verbose_name = 'Student_from_User'
 
 class QuizAssignment(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    questions = models.ForeignKey(Question, on_delete = models.SET_NULL, null = True)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    # questions = models.ForeignKey(Question, on_delete = models.SET_NULL, null = True)
     completed = models.BooleanField(default=False)
     class Meta:
         verbose_name = 'Quiz_Assignments'

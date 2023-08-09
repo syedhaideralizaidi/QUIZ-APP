@@ -1,0 +1,82 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+<hr>
+<h4>Welcome to {{ quiz.title }}</h4>
+    <br>
+    <h6>By:<i> Professor {{ teacher|upper }}</i></h6>
+<hr>
+    <br>
+    <h3 style="text-align:left;">
+    Quiz Started
+        <span style="float:right;" id="minutes">
+            <i>Time Limit: 60 minutes</i>
+    </span>
+</h3>
+<form method="post"  action="" id="submits">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <hr>
+    <button type="submit" class="btn btn-warning" value="submit" >Submit</button>
+</form>
+    <hr>
+{#    <button type="button" class="btn btn-danger" ><a href="{% url 'dashboard-student' %}" style="color: whitesmoke">Go back</a></button>#}
+    <br>
+{% endblock %}
+{% block end_script %}
+
+<script>
+    var countDownDate = new Date().getTime() + 3600000;
+
+    var x = setInterval(function() {
+        var now = new Date().getTime();
+
+        var distance = countDownDate - now;
+
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("minutes").innerHTML = "<i>Time Limit: " + minutes + "m " + seconds + "s</i>";
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("submits").submit();
+        }
+    }, 1000);
+</script>
+{% endblock end_script %}
+
+{#<script>#}
+{#function makeTimer() {#}
+{#    let limit = {{ quiz.time_limit }}#}
+{#    var endTime = new Date("09 August 2023 14:01:00 GMT+00:60");#}
+{#    console.log("check1 :",(endTime))#}
+{##}
+    {#var newdate = new Date($.now());#}
+    {#console.log("check2: ", newdate)#}
+    {#endTime = new Date(newdate.getTime() + limit*60000);#}
+    {#console.log("check3:" ,(endTime))#}
+    {#    var newnow= new Date();#}
+    {#    var endTime = new Date(newnow.getTime() + (limit*60000));#}
+{#    endTime = (Date.parse(endTime) / 1000);#}
+{##}
+{#    var now = new Date();#}
+{#    now = (Date.parse(now) / 1000);#}
+{##}
+{#    var TimeLeft = endTime - now;#}
+    {#var TimeLeft = Math.floor((endTime - now) / 1000);#}
+{##}
+{#    var days = Math.floor(TimeLeft / 86400);#}
+{#    var hours = Math.floor((TimeLeft - (days * 86400)) / 3600);#}
+{#    var minutes = Math.floor((TimeLeft - (days * 86400) - (hours * 3600)) / 60);#}
+{#    var seconds = Math.floor((TimeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));#}
+{#    $("#minutes").html(minutes+":"+seconds + "<span> Left</span>");#}
+{##}
+{##}
+{#    if (minutes<=0){#}
+        {#$("#submits").submit();#}
+{#        console.log("Inside submit")#}
+{#    }#}
+{#   setInterval(function() { makeTimer(); }, 1000);#}
+{#</script>#}
+{#{% endblock end_script %}#}
