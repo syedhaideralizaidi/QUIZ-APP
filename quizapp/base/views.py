@@ -3,6 +3,8 @@ from datetime import datetime , timedelta
 
 from django.contrib.auth import login, logout
 from django.core.exceptions import ValidationError
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.http import HttpResponse , HttpResponseBadRequest
 from django.shortcuts import render , redirect
 from django.urls import reverse , reverse_lazy
@@ -10,9 +12,9 @@ from django.utils.encoding import force_bytes
 from django.views import View
 from django.views.generic import CreateView , TemplateView , UpdateView , DeleteView , FormView
 
-from .forms import QuestionForm
+from .forms import QuestionForm , AnswerForm
 from .helpers import send_forgot_password_mail
-from .models import User , Quiz , Question , QuizScore , QuizAssignment
+from .models import User , Quiz , Question , QuizScore , QuizAssignment , Answer
 
 
 def home(request):
@@ -247,12 +249,36 @@ class StartQuiz(View):
         id = pk
         assigned_quiz = Quiz.objects.get(id = id)
         teacher = assigned_quiz.teacher
+        # assigned_quiz.time_limit = 30
         date = datetime.now()
         questions = Question.objects.filter(quiz_id = assigned_quiz.pk)
-        inital = {'teacher': teacher, 'quiz': assigned_quiz, 'date':date}
+        question_forms = [(question, AnswerForm()) for question in questions]
+        inital = {'teacher': teacher, 'quiz': assigned_quiz, 'date':date, 'forms': question_forms}
         return render(request, 'templates/base/start_quiz.html', inital)
 
     def post(self, request, pk = None):
-        id = pk
+        quiz = Quiz.objects.get(id=pk)
+        questions = Question.objects.filter(quiz_id = quiz.pk)
+        answer = request.POST.getlist('answer_text')
+        count = 0
+        correct = False
+        for question in questions:
+            if question.correct_answer == answer[count]:
+                correct = True
+            elif question.correct_answer != answer[count]:
+                correct = False
+            ans = Answer.objects.create(question = question, answer_text = answer[count], is_correct = correct, user = self.request.user)
+            ans.save()
+            count += 1
+        assignment = QuizAssignment.objects.get(quiz = quiz, student = self.request.user)
+        assignment.completed = True
+        assignment.save()
         return redirect("dashboard-student")
 
+# @receiver(post_save, sender = Answer)
+# def answer_created(sender, instance, created, **kwargs):
+#     if created:
+#         current_user = instance.user
+#         current_quiz = instance.question.quiz
+#         correct_answers = Answer.objects.filter(user = current_user, question__quiz=current_quiz, is_correct=True)
+#         print("Inside SIgnal", correct_answers)

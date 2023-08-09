@@ -81,6 +81,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name = 'question_answer')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     answer_text = models.CharField(max_length=255)
     is_correct = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add = True)
@@ -104,13 +105,6 @@ class QuizScore(models.Model):
     leaders = LeaderScores()
     def __str__(self):
         return f"{self.user_id} - {self.quiz_id} - {self.score}"
-
-
-# class Student(User):
-#     quizzes = models.ManyToManyField('Quiz', related_name='students')
-#
-#     class Meta:
-#         verbose_name = 'Student_from_User'
 
 class QuizAssignment(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
