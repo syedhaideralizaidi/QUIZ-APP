@@ -1,0 +1,90 @@
+{% extends 'templates/base/main.html' %}
+
+
+{% block content %}
+    <hr>
+    <center><h1>Statistics</h1></center>
+    <hr>
+    <br><br>
+    <hr>
+    <h5>Quiz Scores of All Students</h5>
+  <hr>
+    <br>
+
+    <div id="container" style="width: 75%;">
+
+        <div class="col">
+        <div class="row chart">
+    <canvas id="pie-chart"></canvas>
+        </div>
+                      <a href="{% url 'pdf' 1 %}" class="btn btn-warning">Download Report</a>
+
+  <br><br>
+        <hr>
+    <h5>Teacher Quizzes with their Time Limits</h5>
+  <hr>
+        <br>
+        <div class="row chart">
+    <canvas id="pie-chart2"></canvas>
+
+        </div>
+                                  <a href="{% url 'pdf' 2 %}" class="btn btn-warning">Download Report</a>
+
+        </div>
+  </div>
+  <br><br>
+        <hr>
+    <style>
+.chart{
+    transform: translateX(200px);
+}
+
+    </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script>
+
+    var config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: [
+            '#191970', '#6495ED', '#0096FF', '#4682B4', '#ADD8E6'
+          ],
+          label: 'Quizzes'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var config2 = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ new_data|safe }},
+          backgroundColor: [
+            '#6E260E', '#C41E3A', '#9A2A2A', '#630330', '#ADD8E6'
+          ],
+          label: 'Quizzes'
+        }],
+        labels: {{ new_labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+
+      var ctx = document.getElementById('pie-chart2').getContext('2d');
+      window.myPie = new Chart(ctx, config2);
+    };
+
+  </script>
+
+{% endblock %}

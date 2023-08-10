@@ -3,34 +3,34 @@
 {% block content %}
 <div class="container">
 <hr>
-  <h3 class="mb-4">Teacher Dashboard</h3>
+  <h3 class="mb-4">Admin Dashboard</h3>
     <hr>
 <br>
   <div class="row">
     <div class="col-md-4 mb-4">
       <div class="card">
         <div class="card-body">
-          <h2 class="card-title">Create Quiz</h2>
-          <p class="card-text">Create a new quiz for your students.</p>
-          <a href="{% url 'quiz-create' %}" class="btn btn-success">Create Quiz</a>
+          <h2 class="card-title">View Reports</h2>
+          <p class="card-text">View the Reports</p>
+          <a href="{% url 'stats' %}" class="btn btn-success">View</a>
         </div>
       </div>
     </div>
     <div class="col-md-4 mb-4">
       <div class="card">
         <div class="card-body">
-          <h2 class="card-title">View Quiz History</h2>
-          <p class="card-text">View the quizzes you have created.</p>
-          <a href="{% url 'quiz-history-teacher' %}" class="btn btn-danger">View Quiz History</a>
+          <h2 class="card-title">View Teachers</h2>
+          <p class="card-text">View all teachers</p>
+          <a href="{% url 'teachers' %}" class="btn btn-danger">View</a>
         </div>
       </div>
     </div>
     <div class="col-md-4 mb-4">
       <div class="card">
         <div class="card-body">
-          <h2 class="card-title">Set Profile</h2>
-          <p class="card-text">Update your profile information.</p>
-          <a href="{% url 'update-teacher' request.user.id %}" class="btn btn-warning">Set Profile</a>
+          <h2 class="card-title">View Students</h2>
+          <p class="card-text">View all students</p>
+          <a href="{% url 'students' %}" class="btn btn-warning">View</a>
         </div>
       </div>
     </div>

@@ -12,14 +12,14 @@
 
   <div class="row">
       {% for quiz in my_quizzes %}
-    <div class="col-md-6 mb-6">
+    <div class="col-md-4 mb-4">
       <div class="card">
         <div class="card-body">
           <h2 class="card-title">{{ quiz.quiz_id.title }}</h2>
             <hr>
             <p class="card-text"><i>Your Score: </i> <strong> {{ quiz.score }}</strong></p>
             <p class="card-text"><i>Difficulty Level: </i> <strong> {{ quiz.quiz_id.difficulty_level }}</strong></p>
-            <p class="card-text"><i>Total Questions: </i> <strong> {{ quiz.quiz_id.question_numbers}}</strong></p>
+            <p class="card-text"><i>Category: </i> <strong> {{ quiz.quiz_id.category}}</strong></p>
             <p class="card-text"><i>Status: </i> <strong> {{ quiz.status_pass}}</strong></p>
 
 

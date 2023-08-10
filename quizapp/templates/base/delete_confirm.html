@@ -1,0 +1,17 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+
+    <div class="container">
+<hr>
+    <center>
+  <h3 class="mb-4">Delete {{ title }}</h3></center>
+    <hr>
+<form method="post">
+{% csrf_token %}
+<h2>Are you sure to delete this {{ title }}? - ({{ object }})</h2>
+    <hr>
+    <input type="submit" value="Delete" class="btn btn-danger">
+</form>
+    </div>
+{% endblock %}

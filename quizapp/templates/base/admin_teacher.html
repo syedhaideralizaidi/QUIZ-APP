@@ -1,0 +1,41 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+<div class="container">
+<hr>
+  <h3 class="mb-4">All Teachers</h3>
+    <hr>
+<br>
+  <div class="row">
+      {% for t in teacher %}
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">{{ t.username }}</h2>
+            <hr>
+          <a href="{% url 'teacher-admin-quizzes' t.id %}" class="btn btn-success">View</a>
+            <a href="{% url 'teacher-update' t.id %}" class="btn btn-warning">Update</a>
+            <a href="{% url 'teacher-delete' t.id %}" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+  </div>
+    <a href="{% url 'teacher-create' %}" class="btn btn-warning">Create</a>
+
+
+</div>
+
+<style>
+.card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+</style>
+
+{% endblock %}

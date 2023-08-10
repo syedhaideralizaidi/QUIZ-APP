@@ -1,0 +1,17 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+<hr>
+<h4>Teacher Creation</h4>
+<hr>
+    <br>
+<form method="post"  action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-warning" value="submit">Submit</button>
+</form>
+    <hr>
+    <button type="button" class="btn btn-danger"><a href="{% url 'dashboard-admin' %}" style="color: whitesmoke">Go back</a></button>
+    <hr>
+    <br>
+{% endblock %}
