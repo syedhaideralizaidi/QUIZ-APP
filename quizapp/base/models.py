@@ -49,6 +49,12 @@ class Quiz(models.Model):
         ("MATHS", "Maths"),
         ("ENGLISH", "English"),
     ]
+
+    answer_choices = [
+        ("MULTIPLE", "Multiple"),
+        ("SHORT", "Short"),
+        ("TRUEFALSE", "TrueFalse"),
+    ]
     title = models.CharField(max_length=255)
     description = models.TextField(
         null=True,
@@ -61,6 +67,9 @@ class Quiz(models.Model):
     category = models.CharField(
         max_length=128, choices=category_choices, default="Maths"
     )
+    quiz_type = models.CharField(
+        max_length = 128, choices = answer_choices, default = "Short"
+    )
     total_score = models.IntegerField()
     question_numbers = models.IntegerField(default=1)
     required_score = models.IntegerField()
@@ -68,6 +77,7 @@ class Quiz(models.Model):
     teacher = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="created_quizzes", default=2
     )
+    students = models.ManyToManyField(User, through = 'QuizAssignment', related_name = 'assigned_quizzes', limit_choices_to = {'is_student': True})
     objects = models.Manager()
 
     def __str__(self):
@@ -129,7 +139,6 @@ class QuizScore(models.Model):
 class QuizAssignment(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
-    # questions = models.ForeignKey(Question, on_delete = models.SET_NULL, null = True)
     completed = models.BooleanField(default=False)
 
     class Meta:

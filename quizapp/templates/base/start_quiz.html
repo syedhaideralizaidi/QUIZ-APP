@@ -4,8 +4,13 @@
 <hr>
 <h4>Welcome to {{ quiz.title }}</h4>
     <br>
-    <h6>By:<i> Professor {{ teacher|upper }}</i></h6>
+    <h6>By:<strong> Professor {{ teacher|upper }}</strong></h6>
 <hr>
+
+    <span>
+        <h8><i>Instructions:  <strong>{{ quiz.description }}</strong></i></h8>
+    </span>
+    <hr>
     <br>
     <h3 style="text-align:left;">
     Quiz Started

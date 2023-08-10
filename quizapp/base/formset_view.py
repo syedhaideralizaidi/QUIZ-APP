@@ -1,8 +1,7 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect , render
+from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 from django.urls import reverse
-from .models import Quiz, User
+from .models import Quiz, User, QuizAssignment
 from .forms import QuizFormSet, QuizForm
 
 
@@ -27,7 +26,7 @@ class QuizCreateView(CreateView):
         context = self.get_context_data()
         quiz = form.save(commit=False)
         quiz.teacher = self.request.user
-        quiz.total_score = 100
+        # quiz.total_score = 100
         quiz.save()
         question_formset = context["question_formset"]
         students = User.students.all()
@@ -50,41 +49,3 @@ class QuizCreateView(CreateView):
 
     def get_success_url(self):
         return redirect("/dashboard_teacher")
-
-    # def get_context_data(self, **kwargs):
-    #     data = super().get_context_data(**kwargs)
-    #     if self.request.POST:
-    #         data['questions'] = QuestionFormSet(self.request.POST)
-    #     else:
-    #         data['questions'] = QuestionFormSet()
-    #     return data
-    #
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     questions = context['questions']
-    #     quiz = form.save(commit=False)
-    #     quiz.teacher = self.request.user
-    #     quiz.save()
-    #     if questions.is_valid():
-    #         questions.instance = quiz
-    #         questions.save()
-    #     return super().form_valid(form)
-
-
-from django.views.generic.edit import CreateView, UpdateView
-from django.urls import reverse_lazy
-from .models import Quiz, QuizAssignment
-
-# class QuizCreateView(CreateView):
-#     model = Quiz
-#     template_name = 'quiz_create.html'
-#     fields = ['title', 'description', 'time_limit', 'difficulty_level', 'category', 'total_score', 'question_numbers', 'required_score']
-#
-#     def form_valid(self, form):
-#         quiz = form.save(commit=False)
-#         quiz.teacher = self.request.user
-#         quiz.save()
-#         students = Student.objects.all()
-#         for student in students:
-#             QuizAssignment.objects.create(quiz=quiz, student=student)
-#         return super().form_valid(form)

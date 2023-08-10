@@ -13,8 +13,10 @@ class QuizForm(forms.ModelForm):
             "difficulty_level",
             "category",
             "required_score",
+            "total_score",
+            "students",
+            "quiz_type",
         ]
-        # fields = '__all__'
 
 
 class QuestionForm(forms.ModelForm):
