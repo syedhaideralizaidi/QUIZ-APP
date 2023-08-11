@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, pdf_view
+from . import views, pdf_view, classroom_views
 from . import formset_view
 from django.contrib.auth.decorators import login_required
 
@@ -142,4 +142,30 @@ urlpatterns = [
         login_required(pdf_view.pdf),
         name = "pdf",
     ),
+    path(
+        "classroom_create",
+        login_required(classroom_views.ClassroomCreate.as_view()),
+        name = "create-classroom",
+    ),
+    path(
+        "classroom_update/<str:pk>",
+        login_required(classroom_views.ClassroomUpdate.as_view()),
+        name = "update-classroom",
+    ),
+    path(
+        "classroom_delete/<str:pk>",
+        login_required(classroom_views.ClassroomDelete.as_view()),
+        name = "delete-classroom",
+    ),
+    path(
+        "classrooms",
+        login_required(classroom_views.ClassroomTemplate.as_view()),
+        name = "classrooms",
+    ),
+    path(
+        "classrooms_student",
+        login_required(classroom_views.ClassroomStudentTemplate.as_view()),
+        name = "classrooms-student",
+    ),
+
 ]

@@ -1,0 +1,55 @@
+
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+
+<div class="container">
+<hr>
+    <center>
+  <h3 class="mb-4">Your Classrooms</h3></center>
+    <hr>
+<br>
+
+  <div class="row">
+      {% for class in classrooms %}
+    <div class="col-md-5 mb-5">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">{{ class.name }}</h2>
+            <hr>
+            {% for i in class_students %}
+                {% if i in class.students %}
+            <p class="card-text"><i>Students: </i> <strong> {{ i.student.name }}</strong></p>
+                {% endif %}
+                {% endfor %}
+            {% for i in class_students %}
+                {% if i in class.quizzes %}
+            <p class="card-text"><i>Quizzes: </i> <strong> {{ i.quiz.name }}</strong></p>
+                {% endif %}
+                {% endfor %}
+
+            <a href="{% url 'update-classroom' class.id %}" class="btn btn-warning">Update</a>
+            <a href="{% url 'delete-classroom' class.id %}" class="btn btn-danger">Delete</a>
+
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+
+
+  </div>
+</div>
+
+<style>
+.card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+</style>
+
+{% endblock %}

@@ -37,7 +37,15 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+class Classroom(models.Model):
+    name = models.CharField(max_length = 128, null = False, blank = False, default = "Class 1")
+    # quizzes = models.ManyToManyField(Quiz, related_name = 'quiz_classroom', through = 'ClassroomQuizHistory')
+    students = models.ManyToManyField(User, related_name = 'students_classroom', limit_choices_to = {'is_student': True}, through = 'ClassroomStudentEnrolled')
+    teacher = models.ForeignKey(User, on_delete = models.CASCADE, limit_choices_to = {'is_teacher': True})
+    created = models.DateTimeField(auto_now_add = True)
 
+    def __str__(self):
+        return self.name
 class Quiz(models.Model):
     difficulty_choices = [
         ("EASY", "Easy"),
@@ -77,6 +85,7 @@ class Quiz(models.Model):
     teacher = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="created_quizzes", default=2
     )
+    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE, default = 4)
     students = models.ManyToManyField(User, through = 'QuizAssignment', related_name = 'assigned_quizzes', limit_choices_to = {'is_student': True})
     objects = models.Manager()
 
@@ -135,11 +144,19 @@ class QuizScore(models.Model):
     def __str__(self):
         return f"{self.user_id} - {self.quiz_id} - {self.score}"
 
+class ClassroomStudentEnrolled(models.Model):
+    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
+    student = models.ForeignKey(User, on_delete = models.CASCADE, limit_choices_to = {'is_student': True})
+    created = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return f"{self.classroom} - {self.student}"
 
 class QuizAssignment(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
+    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE, default = 4)
 
     class Meta:
         verbose_name = "Quiz_Assignments"

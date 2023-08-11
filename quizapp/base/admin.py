@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Quiz, QuizScore, Question, Answer, User, QuizAssignment
+from .models import Quiz , QuizScore , Question , Answer , User , QuizAssignment , Classroom, ClassroomStudentEnrolled
 
 
 @admin.register(User)
@@ -35,3 +35,17 @@ class AnswerAdmin(admin.ModelAdmin):
 @admin.register(QuizAssignment)
 class QuizAssignmentAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(Classroom)
+class ClassroomAdmin(admin.ModelAdmin):
+    pass
+
+# @admin.register(ClassroomQuizHistory)
+# class ClassroomQuizHistoryAdmin(admin.ModelAdmin):
+#     pass
+
+
+@admin.register(ClassroomStudentEnrolled)
+class ClassroomStudentEnrolledAdmin(admin.ModelAdmin):
+    pass
+

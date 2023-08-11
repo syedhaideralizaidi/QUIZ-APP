@@ -14,7 +14,8 @@ class QuizForm(forms.ModelForm):
             "category",
             "required_score",
             "total_score",
-            "students",
+            # "students",
+            "classroom",
             "quiz_type",
         ]
 

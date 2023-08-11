@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from django.dispatch import receiver
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
@@ -263,7 +263,7 @@ class MyScores(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        student = QuizScore.objects.filter(user_id=self.request.user.pk).distinct('quiz_id')
+        student = QuizScore.objects.filter(user_id=self.request.user.pk)
         context["my_scores"] = student
         return context
 
@@ -273,7 +273,7 @@ class QuizHistoryViewStudent(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        student = QuizScore.objects.filter(user_id=self.request.user.pk).distinct('quiz_id')
+        student = QuizScore.objects.filter(user_id=self.request.user.pk)
         context["my_quizzes"] = student
         return context
 
@@ -338,6 +338,31 @@ class StartQuiz(View):
             )
             ans.save()
             count += 1
+
+        #Checking Answers and Creating Scores
+        correct_answers = Answer.objects.filter(
+            user = self.request.user, question__quiz = quiz, is_correct = True
+        ).distinct("question")
+
+        total_score = 0
+        for i in correct_answers:
+            total_score += i.question.score
+
+        required_score = quiz.required_score
+        status_pass = False
+        if total_score >= required_score:
+            status_pass = True
+        else:
+            status_pass = False
+
+        quizscore = QuizScore.objects.get_or_create(
+            user_id = self.request.user,
+            quiz_id = quiz,
+            score = total_score,
+            status_pass = status_pass,
+        )
+
+        #Checking end
         assignment = QuizAssignment.objects.get(quiz=quiz, student=self.request.user)
         assignment.completed = True
         assignment.save()
@@ -427,7 +452,7 @@ class StudentAdminQuizzes(View):
 
     def get(self, request, pk = None):
         user = User.objects.get(pk = pk)
-        quizzes = QuizScore.objects.filter(user_id = user).distinct('quiz_id')
+        quizzes = QuizScore.objects.filter(user_id = user)
         context = {'quizzes': quizzes}
         return render(request, 'templates/base/student_admin_quizzes.html', context)
 
@@ -435,7 +460,7 @@ class TeacherAdminQuizzes(View):
 
     def get(self, request, pk = None):
         user = User.objects.get(pk = pk)
-        quizzes = QuizScore.objects.filter(quiz_id__teacher = user).distinct('quiz_id')
+        quizzes = QuizScore.objects.filter(quiz_id__teacher = user)
         context = {'quizzes': quizzes}
         return render(request, 'templates/base/teacher_admin_quizzes.html', context)
 
@@ -467,47 +492,3 @@ class Stats(TemplateView):
 
 
         return context
-@receiver(post_save, sender=Answer)
-def answer_created(sender, instance, created, **kwargs):
-    if created:
-        current_user = instance.user
-        current_quiz = instance.question.quiz
-        correct_answers = Answer.objects.filter(
-            user=current_user, question__quiz=current_quiz, is_correct=True
-        ).distinct("question")
-        correct_answers_count = (
-            Answer.objects.filter(
-                user=current_user, question__quiz=current_quiz, is_correct=True
-            )
-            .distinct("question")
-            .count()
-        )
-
-        total_score = 0
-        for i in correct_answers:
-            total_score += i.question.score
-
-        required_score = current_quiz.required_score
-        if total_score >= required_score:
-            QuizScore.objects.get_or_create(
-                user_id = current_user,
-                quiz_id = current_quiz,
-                score = total_score,
-                status_pass = True,
-            )
-        else:
-            QuizScore.objects.get_or_create(
-                user_id = current_user,
-                quiz_id = current_quiz,
-                score = total_score,
-                status_pass = False,
-            )
-
-        # QuizScore.objects.get_or_create(
-        #     user_id=current_user,
-        #     quiz_id=current_quiz,
-        #     score=total_score,
-        #     status_pass=status_pass,
-        # )
-
-        return reverse('quiz-status', kwargs= {'pk': 12})
