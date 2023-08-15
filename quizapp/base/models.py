@@ -1,5 +1,9 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission, UserManager
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class StudentManager(models.Manager):
@@ -39,7 +43,6 @@ class User(AbstractUser):
 
 class Classroom(models.Model):
     name = models.CharField(max_length = 128, null = False, blank = False, default = "Class 1")
-    # quizzes = models.ManyToManyField(Quiz, related_name = 'quiz_classroom', through = 'ClassroomQuizHistory')
     students = models.ManyToManyField(User, related_name = 'students_classroom', limit_choices_to = {'is_student': True}, through = 'ClassroomStudentEnrolled')
     teacher = models.ForeignKey(User, on_delete = models.CASCADE, limit_choices_to = {'is_teacher': True})
     created = models.DateTimeField(auto_now_add = True)
@@ -86,6 +89,7 @@ class Quiz(models.Model):
         User, on_delete=models.CASCADE, related_name="created_quizzes", default=2
     )
     classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE, default = 4)
+    # last_date = models.DateTimeField(default = datetime.datetime.today)
     students = models.ManyToManyField(User, through = 'QuizAssignment', related_name = 'assigned_quizzes', limit_choices_to = {'is_student': True})
     objects = models.Manager()
 
@@ -95,13 +99,22 @@ class Quiz(models.Model):
     def get_questions(self):
         self.quiz_question.all()
 
+    # def save(self, *args, **kwargs):
+    #     self.last_date = datetime.timedelta(days=2)
+    #     super(Quiz, self).save(*args, **kwargs)
+
 
 class Question(models.Model):
+    answer_choices = [
+        ("SHORT", "Short"),
+        ("MULTIPLE", "Multiple"),
+        ("TRUEFALSE", "TrueFalse"),
+    ]
     quiz = models.ForeignKey(
         Quiz, on_delete=models.CASCADE, related_name="quiz_question"
     )
     question_text = models.CharField(max_length=255)
-    answer_options = models.CharField(max_length=255)
+    answer_options = models.CharField(max_length=255, choices = answer_choices, default = "Short")
     correct_answer = models.CharField(max_length=255)
     score = models.IntegerField()
 
@@ -163,3 +176,11 @@ class QuizAssignment(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.quiz}"
+
+
+# @receiver(post_save, sender= Quiz)
+# def add_order_items(sender, instance, **kwargs):
+#     instance.last_date = datetime.timedelta(days = 2)
+#     last_date_str = str(instance.last_date)
+#     instance.last_date = datetime.datetime.now() + datetime.timedelta(days = 2)
+#     instance.save()

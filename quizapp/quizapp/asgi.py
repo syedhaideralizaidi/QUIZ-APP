@@ -1,16 +1,19 @@
-"""
-ASGI config for quizapp project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
-"""
-
 import os
 
 from django.core.asgi import get_asgi_application
+from channels.routing import ProtocolTypeRouter, URLRouter
+# import quizapp.base.routing as router
+from base import routing
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.development")
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "quizapp.settings")
+django_asgi_app = get_asgi_application()
 
-application = get_asgi_application()
+
+application = ProtocolTypeRouter({
+    'http': django_asgi_app,
+    'websocket': URLRouter(
+        routing.websocket_urlpatterns
+    )
+})
+
+print("Inside asgii")

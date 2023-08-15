@@ -28,7 +28,7 @@
         {{ question_form.1.as_p }}
 
 {% endfor %}
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" class="btn btn-warning">
     </form>
 
     <hr>
@@ -56,4 +56,5 @@ let limit = {{ quiz.time_limit }}
         }
     }, 1000);
 </script>
+
 {% endblock end_script %}

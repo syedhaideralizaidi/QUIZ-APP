@@ -16,6 +16,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "channels" ,
+    "django_crontab" ,
+    "django_cron",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -36,7 +39,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "quizapp.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -53,9 +55,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "quizapp.wsgi.application"
+# WSGI_APPLICATION = "quizapp.wsgi.application"
+#ASGI_APPLICATION = "quizapp.asgi.application"
+ASGI_APPLICATION = 'quizapp.asgi.application'
 
-
+# print(ASGI_APPLICATION)
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -117,3 +121,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "static/images")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "base.User"
+
+
+CRONJOBS = [
+ #   ('*/1 * * * *', 'base.cron.attempt_quizzes', '>> ./cron/email.log 2>&1')
+    ('*/1 * * * *', "base.cron.MyCronJob", ">> ./cron/email.log 2>&1")
+]
+
+CRON_CLASSES = [
+    "base.cron.MyCronJob",
+]
+
+CRONTAB_COMMAND_SUFFIX = '2>&1'

@@ -78,9 +78,9 @@ urlpatterns = [
         name="quiz-start",
     ),
     path(
-        "quiz_status/<int:pk>",
+        "quiz_status/<int:pk>/",
         login_required(views.QuizStatus.as_view()),
-        name = "quiz-status",
+        name = "quiz_status",
     ),
     path(
         "teachers",

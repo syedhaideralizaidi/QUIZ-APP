@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save,pre_save
 from django.dispatch import receiver
+from django import forms
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -34,7 +35,15 @@ def login_admin(request):
         # password = check_password(password)
         # user = authenticate(request, username=username, password=password)
         user = User.objects.filter(username=username).first()
-        password = user.check_password(password)
+
+        if User.objects.filter(username=username).exists():
+            password = user.check_password(password)
+        else :
+            context = {
+                "message" : "You are not an admin, Login as Admin!" ,
+                "title" : "Login as Admin" ,
+            }
+            return render(request , "templates/base/invalid.html" , context)
 
         print(user)
         if user is not None and password:
@@ -56,7 +65,14 @@ def login_teacher(request):
         username = request.POST["username"]
         password = request.POST["password"]
         # user = authenticate(request, username=username, password=password)
-        user = User.objects.get(username=username, password=password)
+        try:
+            user = User.objects.get(username=username, password=password)
+        except:
+            context = {
+                "message" : "You are not a teacher, Signup First!" ,
+                "title" : "Go to home page for Sign Up." ,
+            }
+            return render(request , "templates/base/invalid.html" , context)
         if user is not None and user.is_teacher:
             print(user)
             login(request, user)
@@ -77,8 +93,14 @@ def login_student(request):
         username = request.POST["username"]
         password = request.POST["password"]
         # user = authenticate(request, username=username, password=password, is_student = True)
-        user = User.objects.get(username=username, password=password)
-
+        try:
+            user = User.objects.get(username=username, password=password)
+        except:
+            context = {
+                "title" : "No User, Sign Up first!" ,
+                "message" : "Please Sign Up before Login." ,
+            }
+            return render(request , "templates/base/invalid.html" , context)
         if user is not None and user.is_student:
             login(request, user)
             return redirect("/dashboard_student")
@@ -275,6 +297,10 @@ class QuizHistoryViewStudent(TemplateView):
         context = super().get_context_data(**kwargs)
         student = QuizScore.objects.filter(user_id=self.request.user.pk)
         context["my_quizzes"] = student
+        search_input = self.request.GET.get('search-area') or ''
+        if search_input:
+            context['my_quizzes'] = context['my_quizzes'].filter(quiz_id__category__icontains= search_input) or context['my_quizzes'].filter(quiz_id__difficulty_level__icontains= search_input)
+        context['search_input'] = search_input
         return context
 
 
@@ -299,7 +325,6 @@ class PendingQuizzes(TemplateView):
         context["my_quizzes"] = student
         return context
 
-
 class StartQuiz(View):
     template_name = "templates/base/start_quiz.html"
 
@@ -307,10 +332,32 @@ class StartQuiz(View):
         id = pk
         assigned_quiz = Quiz.objects.get(id=id)
         teacher = assigned_quiz.teacher
-        # assigned_quiz.time_limit = 30
         date = datetime.now()
         questions = Question.objects.filter(quiz_id=assigned_quiz.pk)
-        question_forms = [(question, AnswerForm()) for question in questions]
+        # question_forms = [(question, AnswerForm()) for question in questions]
+        # print(question_forms)
+
+        # question_forms = []
+        # for question in questions:
+        #     form = AnswerForm(question = question)
+        #     question_forms.append((question, form))
+
+
+        question_forms = []
+        for question in questions:
+            answer_options = question.answer_options
+            if answer_options == "TRUEFALSE":
+                form = AnswerForm(initial = {"question": question})
+                form.fields["answer_text"] = forms.ChoiceField(
+                    choices = [("TRUE", "TRUE"), ("FALSE", "FALSE")],
+                    widget = forms.RadioSelect,
+                    label = "True or False"
+                )
+            elif answer_options == "SHORT":
+                form = AnswerForm(initial = {"question": question})
+            else:
+                form = AnswerForm()
+            question_forms.append((question, form))
         inital = {
             "teacher": teacher,
             "quiz": assigned_quiz,
@@ -366,7 +413,8 @@ class StartQuiz(View):
         assignment = QuizAssignment.objects.get(quiz=quiz, student=self.request.user)
         assignment.completed = True
         assignment.save()
-        return redirect("dashboard-student")
+        id = quizscore[0].pk
+        return redirect(f"/quiz_status/{id}/")
 
 class QuizStatus(DetailView):
     model = QuizScore

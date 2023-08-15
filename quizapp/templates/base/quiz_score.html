@@ -17,7 +17,7 @@
           <h2 class="card-title">{{ quiz_score.quiz_id.title }}</h2>
           <p class="card-text">Your Score</p>
             <p>{{ quiz_score.score }}/{{ quiz_score.quiz_id.total_score }}</p>
-{#          <a href="{% url 'pending-quiz' %}" class="btn btn-success">View Quizzes</a>#}
+          <a href="{% url 'dashboard-student' %}" class="btn btn-danger">Back to Home</a>
         </div>
       </div>
     </div>

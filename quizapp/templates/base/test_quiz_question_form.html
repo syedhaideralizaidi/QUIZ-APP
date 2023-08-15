@@ -1,0 +1,58 @@
+{% extends 'templates/base/main.html' %}
+
+{% block content %}
+<hr>
+<h4>Quiz Creation</h4>
+<hr>
+<br>
+<form method="post" id="form-container" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div id="question-formset">
+    <hr>
+    <center><i>
+    <h4>Questions</h4></i></center>
+    <hr>
+        {{ question_formset.management_form }}
+        {% for form in question_formset %}
+            <div class="bird-form">
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-form" class="btn btn-primary">Add Question</button>
+    <button type="submit" class="btn btn-warning" value="submit">Create Quiz</button>
+</form>
+<hr>
+<button type="button" class="btn btn-danger"><a href="{% url 'dashboard-teacher' %}" style="color: whitesmoke">Go back</a></button>
+<hr>
+<br>
+
+
+
+<script type="text/javascript">
+    let birdForm = document.querySelectorAll(".bird-form")
+        let container = document.querySelector("#form-container")
+        let addButton = document.querySelector("#add-form")
+        let totalForms = document.querySelector("#question-formset input[name$='TOTAL_FORMS']");
+        totalForms.setAttribute('value', `${{ question_formset.total_form}}`);
+
+        let formNum = birdForm.length-1
+        addButton.addEventListener('click', addForm)
+
+        function addForm(e){
+            e.preventDefault()
+
+            let newForm = birdForm[0].cloneNode(true)
+            let formRegex = RegExp(`form-(\\d){1}-`,'g')
+
+            formNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+            container.insertBefore(newForm, addButton)
+
+            totalForms.setAttribute('value', `${formNum+1}`)
+            console.log(totalForms)
+    }
+</script>
+
+{% endblock %}

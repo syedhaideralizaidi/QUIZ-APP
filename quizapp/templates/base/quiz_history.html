@@ -9,7 +9,11 @@
   <h3 class="mb-4">Your Quizzes</h3></center>
     <hr>
 <br>
-
+<form method="GET">
+    <input type="text" name="search-area" value="{{search_input}}">
+    <input type="submit" value="Search" class="btn btn-warning">
+</form>
+<br><br><br>
   <div class="row">
       {% for quiz in my_quizzes %}
     <div class="col-md-4 mb-4">

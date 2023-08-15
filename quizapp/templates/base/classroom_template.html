@@ -17,16 +17,15 @@
         <div class="card-body">
           <h2 class="card-title">{{ class.name }}</h2>
             <hr>
-            {% for i in class_students %}
-                {% if i in class.students %}
-            <p class="card-text"><i>Students: </i> <strong> {{ i.student.name }}</strong></p>
+
+            <p class="card-text"><i>Students: </i>
+                {% for i in class_students %}
+                {% if i.classroom == class %}
+                <p><strong> {{ i.student }}</strong></p>
                 {% endif %}
                 {% endfor %}
-            {% for i in class_students %}
-                {% if i in class.quizzes %}
-            <p class="card-text"><i>Quizzes: </i> <strong> {{ i.quiz.name }}</strong></p>
-                {% endif %}
-                {% endfor %}
+                    </p>
+
 
             <a href="{% url 'update-classroom' class.id %}" class="btn btn-warning">Update</a>
             <a href="{% url 'delete-classroom' class.id %}" class="btn btn-danger">Delete</a>

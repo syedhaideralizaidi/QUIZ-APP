@@ -6,6 +6,12 @@
   <h3 class="mb-4">{{ request.user.username | upper }} Dashboard</h3>
     <hr>
 <br>
+    <div class="container">
+  <div id="notification"></div>
+
+</div>
+<hr>
+    <br><br>
   <div class="row">
     <div class="col-md-4 mb-4">
       <div class="card">
@@ -77,6 +83,57 @@
 .card:hover {
   transform: translateY(-5px);
 }
+
+#notification {
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: lightseagreen ;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.notification-item {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
 
 {% endblock %}
+
+{% block end_script %}
+    <script>
+function sendHello() {
+  var ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
+  ws.onopen = function() {
+    ws.send('Hello World!');
+  };
+  ws.onmessage = function(event) {
+    var notificationDiv = document.getElementById('notification');
+    var notificationItem = '<div class="notification-item">' + event.data + '</div>';
+    notificationDiv.insertAdjacentHTML('beforeend', notificationItem);
+    notificationDiv.scrollTop = notificationDiv.scrollHeight; // Scroll to the bottom
+  };
+}
+sendHello();
+
+    </script>
+
+
+{% endblock end_script %}

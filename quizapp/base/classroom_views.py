@@ -8,10 +8,11 @@ class ClassroomCreate(CreateView):
     model = Classroom
     fields = ['name', 'students']
     success_url = "/dashboard_teacher"
+    template_name = 'templates/base/classroom_form.html'
 
     def form_valid(self, form):
         form.instance.teacher = self.request.user
-        obj = form.save()
+        form.save()
         return super().form_valid(form)
 
 class ClassroomUpdate(UpdateView):
