@@ -86,9 +86,9 @@ class Quiz(models.Model):
     required_score = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="created_quizzes", default=2
+        User, on_delete=models.CASCADE, related_name="created_quizzes",
     )
-    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE, default = 4)
+    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
     # last_date = models.DateTimeField(default = datetime.datetime.today)
     students = models.ManyToManyField(User, through = 'QuizAssignment', related_name = 'assigned_quizzes', limit_choices_to = {'is_student': True})
     objects = models.Manager()
@@ -169,7 +169,7 @@ class QuizAssignment(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
-    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE, default = 4)
+    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
 
     class Meta:
         verbose_name = "Quiz_Assignments"

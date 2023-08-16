@@ -45,13 +45,14 @@ class QuizCreateView(CreateView):
                 classroom = quiz.classroom
                 for student in students:
                     if ClassroomStudentEnrolled.objects.filter(classroom = classroom, student = student).exists():
-                        QuizAssignment.objects.get_or_create(quiz=quiz, student=student, completed=False)
+                        QuizAssignment.objects.get_or_create(quiz=quiz, student=student, completed=False, classroom = classroom)
 
                     return redirect(reverse("dashboard-teacher"))
                 else:
                     return self.form_invalid(form)
         except IntegrityError:
             print("Not allowed")
+            return HttpResponse("IntegrityError")
 
 
     def form_invalid(self, form):

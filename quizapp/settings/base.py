@@ -55,11 +55,9 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = "quizapp.wsgi.application"
-#ASGI_APPLICATION = "quizapp.asgi.application"
+WSGI_APPLICATION = "quizapp.wsgi.application"
 ASGI_APPLICATION = 'quizapp.asgi.application'
 
-# print(ASGI_APPLICATION)
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
