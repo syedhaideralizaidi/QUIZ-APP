@@ -337,27 +337,27 @@ class StartQuiz(View):
         # question_forms = [(question, AnswerForm()) for question in questions]
         # print(question_forms)
 
-        # question_forms = []
-        # for question in questions:
-        #     form = AnswerForm(question = question)
-        #     question_forms.append((question, form))
-
-
         question_forms = []
         for question in questions:
-            answer_options = question.answer_options
-            if answer_options == "TRUEFALSE":
-                form = AnswerForm(initial = {"question": question})
-                form.fields["answer_text"] = forms.ChoiceField(
-                    choices = [("TRUE", "TRUE"), ("FALSE", "FALSE")],
-                    widget = forms.RadioSelect,
-                    label = "True or False"
-                )
-            elif answer_options == "SHORT":
-                form = AnswerForm(initial = {"question": question})
-            else:
-                form = AnswerForm()
+            form = AnswerForm(question = question)
             question_forms.append((question, form))
+
+
+        # question_forms = []
+        # for question in questions:
+        #     answer_options = question.answer_options
+        #     if answer_options == "TRUEFALSE":
+        #         form = AnswerForm(initial = {"question": question})
+        #         form.fields["answer_text"] = forms.ChoiceField(
+        #             choices = [("TRUE", "TRUE"), ("FALSE", "FALSE")],
+        #             widget = forms.CheckboxSelectMultiple,
+        #             label = "True or False"
+        #         )
+        #     elif answer_options == "SHORT":
+        #         form = AnswerForm(initial = {"question": question})
+        #     else:
+        #         form = AnswerForm()
+        #     question_forms.append((question, form))
         inital = {
             "teacher": teacher,
             "quiz": assigned_quiz,

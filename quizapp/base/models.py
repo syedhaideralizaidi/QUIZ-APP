@@ -107,8 +107,7 @@ class Quiz(models.Model):
 class Question(models.Model):
     answer_choices = [
         ("SHORT", "Short"),
-        ("MULTIPLE", "Multiple"),
-        ("TRUEFALSE", "TrueFalse"),
+        ("TRUEFALSE", "True/False"),
     ]
     quiz = models.ForeignKey(
         Quiz, on_delete=models.CASCADE, related_name="quiz_question"
