@@ -25,6 +25,21 @@ class QuestionForm(forms.ModelForm):
         model = Question
         fields = "__all__"
 
+    def clean(self):
+        cleaned_data = super(QuestionForm, self).clean()
+        # self.data = self.data.copy()
+        # newans = self.data['answer_options']
+        if self.instance.answer_options == 'TRUEFALSE':
+            if self.instance.correct_answer == 'TRUE' or 'true' or 'True':
+                self.instance.correct_answer = 'TRUE'
+            elif self.instance.correct_answer == 'FALSE' or 'false' or 'False':
+                self.instance.correct_answer = 'FALSE'
+            else:
+                pass
+        else:
+            pass
+        return cleaned_data
+
 
 QuizFormSet = inlineformset_factory(
     Quiz,
@@ -36,6 +51,8 @@ QuizFormSet = inlineformset_factory(
     can_delete=True,
     # max_num = 7,
     min_num=1,
+    # can_order = True,
+    can_delete_extra = True,
 )
 
 
@@ -43,6 +60,41 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         fields = ["answer_text"]
+
+
+    def __init__(self, *args, **kwargs):
+        question = kwargs.pop("question" , None)
+        super().__init__(*args, **kwargs)
+        if question :
+            self.instance.question = question
+        if self.instance.question.answer_options == "TRUEFALSE":
+            name = f"answer_text_{question}"
+            self.fields["answer_text"] = forms.ChoiceField(
+                choices = [("TRUE", "TRUE"), ("FALSE", "FALSE")],
+                widget = forms.CheckboxSelectMultiple,
+                label = "True or False",
+                required = True,
+                error_messages = {'required': 'Please select an answer.'},
+
+            )
+
+
+
+
+
+
+
+
+
+
+
+    # def clean_answer_text(self):
+    #     value = self.cleaned_data['answer_text']
+    #     print("answer text", value)
+    #     if len(value) > 1:
+    #         raise forms.ValidationError("You can't select more than 1 answer.")
+    #     return value
+
 
     # def __init__(self, *args, **kwargs):
     #     question = kwargs.pop("question", None)

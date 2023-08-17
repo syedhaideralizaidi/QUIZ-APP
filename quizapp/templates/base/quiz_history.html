@@ -25,9 +25,7 @@
             <p class="card-text"><i>Your Score: </i> <strong> {{ quiz.score }}</strong></p>
             <p class="card-text"><i>Difficulty Level: </i> <strong> {{ quiz.quiz_id.difficulty_level }}</strong></p>
             <p class="card-text"><i>Category: </i> <strong> {{ quiz.quiz_id.category}}</strong></p>
-            <p class="card-text"><i>Status: </i> <strong> {{ quiz.status_pass}}</strong></p>
-
-
+            <p class="card-text"><i>Status: </i> <strong> {% if quiz.status_pass %}Pass{% else %}Failed{% endif %}</strong></p>
         </div>
       </div>
     </div>
