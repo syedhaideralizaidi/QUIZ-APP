@@ -8,7 +8,7 @@
   <h3 class="mb-4">Leader Scores</h3></center>
     <hr>
 <br>
-
+    {% if leader_scores %}
   <div class="row">
       {% for  leaders in leader_scores %}
     <div class="col-md-4 mb-4">
@@ -25,6 +25,12 @@
 
 
   </div>
+    {% else %}
+        <div class="row">
+        <h3>No Scores yet</h3>
+              </div>
+{% endif %}
+
 </div>
 
 <style>
