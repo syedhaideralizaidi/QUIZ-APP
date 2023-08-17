@@ -31,25 +31,41 @@ class QuizCreateView(CreateView):
         context = self.get_context_data()
         try:
             with transaction.atomic():
+                req = self.request.POST
                 quiz = form.save(commit=False)
                 quiz.teacher = self.request.user
                 quiz.save()
                 question_formset = context["question_formset"]
                 students = User.students.all()
+                number_count = 0
                 if question_formset.is_valid():
                     self.object = form.save()
                     question_formset.instance = self.object
+                    count_questions = req['quiz_question-TOTAL_FORMS']
+                    count_questions = int(count_questions)
+                    print(number_count)
+                    # count_questions = int(count_questions)
+                    for question in range(0, count_questions):
+                        value = f'quiz_question-{question}-score'
+                        number_count += int(req[value])
+
+                    if number_count != int(req['total_score']) or req['required_score'] > req['total_score']:
+                        return self.form_invalid(form)
+                    else:
+                        pass
                     question_formset.save()
+
+                # else:
+                #     return HttpResponse("Invalid form Submission, Also fill the questions with the Quiz!. Fill it again")
                 else:
-                    return HttpResponse("Invalid form Submission, Also fill the questions with the Quiz!. Fill it again")
+                    return self.form_invalid(form)
                 classroom = quiz.classroom
                 for student in students:
                     if ClassroomStudentEnrolled.objects.filter(classroom = classroom, student = student).exists():
                         QuizAssignment.objects.get_or_create(quiz=quiz, student=student, completed=False, classroom = classroom)
 
-                    return redirect(reverse("dashboard-teacher"))
-                else:
-                    return self.form_invalid(form)
+                return redirect(reverse("dashboard-teacher"))
+
         except IntegrityError:
             print("Not allowed")
             return HttpResponse("IntegrityError")
