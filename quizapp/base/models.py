@@ -1,9 +1,5 @@
-import datetime
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission, UserManager
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class StudentManager(models.Manager):
@@ -41,14 +37,24 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class Classroom(models.Model):
-    name = models.CharField(max_length = 128, null = False, blank = False, default = "Class 1")
-    students = models.ManyToManyField(User, related_name = 'students_classroom', limit_choices_to = {'is_student': True}, through = 'ClassroomStudentEnrolled')
-    teacher = models.ForeignKey(User, on_delete = models.CASCADE, limit_choices_to = {'is_teacher': True})
-    created = models.DateTimeField(auto_now_add = True)
+    name = models.CharField(max_length=128, null=False, blank=False, default="Class 1")
+    students = models.ManyToManyField(
+        User,
+        related_name="students_classroom",
+        limit_choices_to={"is_student": True},
+        through="ClassroomStudentEnrolled",
+    )
+    teacher = models.ForeignKey(
+        User, on_delete=models.CASCADE, limit_choices_to={"is_teacher": True}
+    )
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+
+
 class Quiz(models.Model):
     difficulty_choices = [
         ("EASY", "Easy"),
@@ -79,18 +85,25 @@ class Quiz(models.Model):
         max_length=128, choices=category_choices, default="Maths"
     )
     quiz_type = models.CharField(
-        max_length = 128, choices = answer_choices, default = "Short"
+        max_length=128, choices=answer_choices, default="Short"
     )
     total_score = models.IntegerField()
     question_numbers = models.IntegerField(default=1)
     required_score = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="created_quizzes",
+        User,
+        on_delete=models.CASCADE,
+        related_name="created_quizzes",
     )
-    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     # last_date = models.DateTimeField(default = datetime.datetime.today)
-    students = models.ManyToManyField(User, through = 'QuizAssignment', related_name = 'assigned_quizzes', limit_choices_to = {'is_student': True})
+    students = models.ManyToManyField(
+        User,
+        through="QuizAssignment",
+        related_name="assigned_quizzes",
+        limit_choices_to={"is_student": True},
+    )
     objects = models.Manager()
 
     def __str__(self):
@@ -98,10 +111,6 @@ class Quiz(models.Model):
 
     def get_questions(self):
         self.quiz_question.all()
-
-    # def save(self, *args, **kwargs):
-    #     self.last_date = datetime.timedelta(days=2)
-    #     super(Quiz, self).save(*args, **kwargs)
 
 
 class Question(models.Model):
@@ -113,7 +122,9 @@ class Question(models.Model):
         Quiz, on_delete=models.CASCADE, related_name="quiz_question"
     )
     question_text = models.CharField(max_length=255)
-    answer_options = models.CharField(max_length=255, choices = answer_choices, default = "Short")
+    answer_options = models.CharField(
+        max_length=255, choices=answer_choices, default="Short"
+    )
     correct_answer = models.CharField(max_length=255)
     score = models.IntegerField()
 
@@ -122,6 +133,13 @@ class Question(models.Model):
 
     def get_answer(self):
         return self.question_answer.all()
+
+    def clean(self):
+        if self.answer_options == "TRUEFALSE":
+            if self.correct_answer == "True" or "TRUE" or "true":
+                self.correct_answer = "TRUE"
+            if self.correct_answer == "False" or "FALSE" or "false":
+                self.correct_answer = "FALSE"
 
 
 class Answer(models.Model):
@@ -156,30 +174,26 @@ class QuizScore(models.Model):
     def __str__(self):
         return f"{self.user_id} - {self.quiz_id} - {self.score}"
 
+
 class ClassroomStudentEnrolled(models.Model):
-    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
-    student = models.ForeignKey(User, on_delete = models.CASCADE, limit_choices_to = {'is_student': True})
-    created = models.DateTimeField(auto_now_add = True)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    student = models.ForeignKey(
+        User, on_delete=models.CASCADE, limit_choices_to={"is_student": True}
+    )
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.classroom} - {self.student}"
+
 
 class QuizAssignment(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
-    classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Quiz_Assignments"
 
     def __str__(self):
         return f"{self.student} - {self.quiz}"
-
-
-# @receiver(post_save, sender= Quiz)
-# def add_order_items(sender, instance, **kwargs):
-#     instance.last_date = datetime.timedelta(days = 2)
-#     last_date_str = str(instance.last_date)
-#     instance.last_date = datetime.datetime.now() + datetime.timedelta(days = 2)
-#     instance.save()
