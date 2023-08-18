@@ -20,8 +20,7 @@ def pdf(request, pk=None):
             labels.append(score.quiz_id.title)
             data.append(str(score.score))
 
-        # Create a table with labels and data
-        data.insert(0, "Score")  # Header
+        data.insert(0, "Score")
         data = [labels] + [data]
         table = Table(data)
         table.setStyle(
@@ -47,8 +46,7 @@ def pdf(request, pk=None):
             labels.append(score.title)
             data.append(str(score.time_limit))
 
-        # Create a table with labels and data
-        data.insert(0, "Score")  # Header
+        data.insert(0, "Score")
         data = [labels] + [data]
         table = Table(data)
         table.setStyle(
