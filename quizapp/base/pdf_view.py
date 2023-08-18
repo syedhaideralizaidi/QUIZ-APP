@@ -68,3 +68,4 @@ def pdf(request, pk=None):
     buf.seek(0)
 
     return FileResponse(buf, as_attachment=True, filename="report.pdf")
+    
