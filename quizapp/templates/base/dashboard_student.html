@@ -120,7 +120,7 @@
 {% block end_script %}
     <script>
 function sendHello() {
-  var ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
+  var ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/' + {{ request.user.pk }});
   ws.onopen = function() {
     ws.send('Hello World!');
   };
@@ -128,7 +128,7 @@ function sendHello() {
     var notificationDiv = document.getElementById('notification');
     var notificationItem = '<div class="notification-item">' + event.data + '</div>';
     notificationDiv.insertAdjacentHTML('beforeend', notificationItem);
-    notificationDiv.scrollTop = notificationDiv.scrollHeight; // Scroll to the bottom
+    notificationDiv.scrollTop = notificationDiv.scrollHeight;
   };
 }
 sendHello();

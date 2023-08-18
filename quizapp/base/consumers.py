@@ -12,6 +12,7 @@ from .models import QuizAssignment
 
 class MySyncConsumer(SyncConsumer):
     def websocket_connect(self, event):
+        self.user = self.scope['url_route']['kwargs']['pk']
         print("Web socket connected...", event)
         self.send({"type": "websocket.accept"})
 
@@ -19,9 +20,9 @@ class MySyncConsumer(SyncConsumer):
         print("Web socket message received...", event)
         print("Received Message is: ", event["text"])
         User = get_user_model()
-        user = User.objects.all()
-        assigned_quiz = QuizAssignment.objects.filter(student=user[4], completed=False)
-        completed_quiz = QuizAssignment.objects.filter(student=user[4], completed=True)
+        user = User.objects.filter(pk = self.user).first()
+        assigned_quiz = QuizAssignment.objects.filter(student=user, completed=False)
+        completed_quiz = QuizAssignment.objects.filter(student=user, completed=True)
 
         self.send(
             {
