@@ -20,7 +20,7 @@ def pdf(request, pk=None):
             labels.append(score.quiz_id.title)
             data.append(str(score.score))
 
-        data.insert(0, "Score")  
+        data.insert(0, "Score")
         data = [labels] + [data]
         table = Table(data)
         table.setStyle(
@@ -46,7 +46,7 @@ def pdf(request, pk=None):
             labels.append(score.title)
             data.append(str(score.time_limit))
 
-        data.insert(0, "Score")  
+        data.insert(0, "Score")
         data = [labels] + [data]
         table = Table(data)
         table.setStyle(
@@ -68,4 +68,4 @@ def pdf(request, pk=None):
     buf.seek(0)
 
     return FileResponse(buf, as_attachment=True, filename="report.pdf")
-    
+
