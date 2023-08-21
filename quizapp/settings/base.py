@@ -30,8 +30,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
+    'django.contrib.sites',
     "base",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google' ,
+
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -60,9 +68,15 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'django.template.context_processors.request',
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = "quizapp.wsgi.application"
@@ -130,14 +144,37 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "base.User"
 
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 CRONJOBS = [
- #   ('*/1 * * * *', 'base.cron.attempt_quizzes', '>> ./cron/email.log 2>&1')
-    ('*/1 * * * *', "base.cron.MyCronJob", ">> ./cron/email.log 2>&1")
+    (
+        "* */6 * * *",
+        "base.cron.attempt_quizzes",
+        ">> " + os.path.join(BASE_DIR, "jobs.log"),
+    )
 ]
+
 
 CRON_CLASSES = [
     "base.cron.MyCronJob",
 ]
 
-CRONTAB_COMMAND_SUFFIX = '2>&1'
+CRONTAB_COMMAND_SUFFIX = "2>&1"

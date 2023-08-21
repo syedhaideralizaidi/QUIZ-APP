@@ -178,6 +178,11 @@ class SignupStudent(CreateView):
 class DashboardTeacher(TemplateView):
     template_name = "templates/base/dashboard/dashboard_teacher.html"
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     if self.request.user.is_authenticated:
+    #         self.request.user.is_teacher = True
+    #     return context
 
 class DashboardStudent(TemplateView):
     template_name = "templates/base/dashboard/dashboard_student.html"
@@ -509,7 +514,7 @@ class TeacherAdminQuizzes(View):
         user = User.objects.get(pk = pk)
         quizzes = QuizScore.objects.filter(quiz_id__teacher = user)
         context = {'quizzes': quizzes}
-        return render(request , 'templates/base/teachers/teacher_admin_quizzes.html' , context)
+        return render(request , 'templates/base/admin/teacher_admin_quizzes.html', context)
 
 class Stats(TemplateView):
     template_name = 'templates/base/admin/statistics.html'

@@ -1,4 +1,6 @@
 {% extends 'templates/base/main.html' %}
+{% load static %}
+{% load socialaccount %}
 
 {% block content %}
 
@@ -17,6 +19,12 @@
           <a href="{% url 'student-login' %}" class="btn btn-success">Login</a>
             <hr>
             <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'student-signup' %}" style="color: black">No account? Sign-up as Student</a></button>
+            <form action="{% provider_login_url 'google' %}" method="post">
+                  {% csrf_token %}
+                                <input type="hidden" name="user_type" value="student">
+                   <button type="submit" class="btn btn-link" style="color: darkblue"><a href="{% url 'dashboard-student' %}" style="color: black"> <img src="{% static 'images/google.png' %}" alt="Google" height="50px">
+                       Sign in with Google</a></button>
+            </form>
 
         </div>
       </div>
@@ -29,6 +37,18 @@
           <a href="{% url 'teacher-login' %}" class="btn btn-warning">Login</a>
             <hr>
             <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'teacher-signup' %}" style="color: black">No account? Sign-up as Teacher</a></button>
+{#            <span>#}
+{#                <button type="button" class="btn btn-link" style="color: navy"><a href="{% url 'account_login' %}" style="color: black">#}
+{#               <img src="{% static 'images/google.png' %}" alt="Google" height="50px">#}
+{#              Sign in with Google</a></button>#}
+{#            </span>#}
+            <form action="{% provider_login_url 'google' %}" method="post" id="teacher">
+                  {% csrf_token %}
+                <input type="hidden" name="user_type" value="teacher">
+                   <button type="submit" class="btn btn-link" style="color: darkblue"><a href="{% url 'dashboard-teacher' %}" style="color: black"> <img src="{% static 'images/google.png' %}" alt="Google" height="50px">
+                       Sign in with Google</a></button>
+            </form>
+
 
         </div>
       </div>
@@ -43,6 +63,9 @@
             <hr>
 {#            <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'home' %}" style="color: black">No account? You cannot Access this.</a></button>#}
  <p style="color: black">No account? You cannot Access this.</p>
+            <br>
+
+            <p><br></p>
 
         </div>
       </div>
@@ -64,3 +87,10 @@
 </style>
 
 {% endblock %}
+
+
+{% block end_script %}
+    <script>
+
+    </script>
+{% endblock end_script %}
