@@ -6,10 +6,12 @@ from django.contrib.auth import get_user_model
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.development")
 import django
 django.setup()
-from .models import QuizAssignment
+from base.models import QuizAssignment
 
 
-class MySyncConsumer(SyncConsumer):
+class QuizStatusSyncConsumer(SyncConsumer):
+    """ This is a consumer which basically displays the completed and pending quizzes count with channels in django
+    synchronously """
 
     def websocket_connect(self, event):
         print("Web socket connected...", event)
@@ -35,7 +37,9 @@ class MySyncConsumer(SyncConsumer):
         raise StopConsumer()
 
 
-class MyAsyncConsumer(AsyncConsumer):
+class QuizStatusAsyncConsumer(AsyncConsumer):
+    """ This is a consumer which basically displays the completed and pending quizzes count with channels in django
+        asynchronously """
 
     async def websocket_connect(self, event):
         print("Web socket connected...", event)

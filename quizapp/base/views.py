@@ -1,23 +1,20 @@
 from base64 import urlsafe_b64encode
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save,pre_save
-from django.dispatch import receiver
 from django import forms
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_bytes
 from django.views import View
 from django.views.generic import (
-    CreateView ,
-    TemplateView ,
-    UpdateView ,
-    DeleteView ,
-    FormView , DetailView ,
+    CreateView,
+    TemplateView,
+    UpdateView,
+    DeleteView,
+    DetailView,
 )
 
 from .forms import QuestionForm, AnswerForm
@@ -50,7 +47,7 @@ def login_admin(request):
             print(user)
             login(request, user)
             print("Current User", request.user)
-            return redirect("/dashboard_admin")
+            return redirect("/admin")
         else:
             context = {
                 "message": "You are not an admin, Login as Admin!",
@@ -58,7 +55,7 @@ def login_admin(request):
             }
             return render(request, "templates/base/invalid.html", context)
     else:
-        return render(request, "templates/base/login_admin.html")
+        return render(request , "templates/base/admin/login_admin.html")
 
 def login_teacher(request):
     if request.method == "POST":
@@ -77,7 +74,7 @@ def login_teacher(request):
             print(user)
             login(request, user)
             print("Current User", request.user)
-            return redirect("/dashboard_teacher")
+            return redirect("/teacher")
         else:
             context = {
                 "message": "You are not a teacher, Login as Student!",
@@ -85,7 +82,7 @@ def login_teacher(request):
             }
             return render(request, "templates/base/invalid.html", context)
     else:
-        return render(request, "templates/base/login_teacher.html")
+        return render(request , "templates/base/teachers/login_teacher.html")
 
 
 def login_student(request):
@@ -103,7 +100,7 @@ def login_student(request):
             return render(request , "templates/base/invalid.html" , context)
         if user is not None and user.is_student:
             login(request, user)
-            return redirect("/dashboard_student")
+            return redirect("/student")
         else:
             context = {
                 "title": "No User, Sign Up first!",
@@ -111,7 +108,7 @@ def login_student(request):
             }
             return render(request, "templates/base/invalid.html", context)
     else:
-        return render(request, "templates/base/login_student.html")
+        return render(request , "templates/base/students/login_student.html")
 
 
 def logout_user(request):
@@ -155,7 +152,7 @@ def reset_password(request, pk, encode):
 
 class SignupTeacher(CreateView):
     model = User
-    template_name = "templates/base/signup_teacher.html"
+    template_name = "templates/base/teachers/signup_teacher.html"
     fields = ["username", "email", "password"]
     success_url = "/"
 
@@ -169,7 +166,7 @@ class SignupTeacher(CreateView):
 
 class SignupStudent(CreateView):
     model = User
-    template_name = "templates/base/signup_student.html"
+    template_name = "templates/base/students/signup_student.html"
     fields = ["username", "email", "password"]
     success_url = "/"
 
@@ -179,20 +176,20 @@ class SignupStudent(CreateView):
 
 
 class DashboardTeacher(TemplateView):
-    template_name = "templates/base/dashboard_teacher.html"
+    template_name = "templates/base/dashboard/dashboard_teacher.html"
 
 
 class DashboardStudent(TemplateView):
-    template_name = "templates/base/dashboard_student.html"
+    template_name = "templates/base/dashboard/dashboard_student.html"
 
 class DashboardAdmin(TemplateView):
-    template_name = "templates/base/dashboard_admin.html"
+    template_name = "templates/base/dashboard/dashboard_admin.html"
 
 
 class QuizCreation(CreateView):
     model = Quiz
     fields = "__all__"
-    success_url = "/dashboard_teacher"
+    success_url = "/teacher"
 
 
 class QuizUpdateDetail(UpdateView):
@@ -205,25 +202,27 @@ class QuizUpdateDetail(UpdateView):
         "category",
         "required_score",
     ]
+    template_name = 'templates/base/teachers/quiz/quiz_form.html'
     success_url = "/quiz_history_teacher"
 
 
 class QuizDelete(DeleteView):
     model = Quiz
+    template_name = 'templates/base/teachers/quiz/quiz_confirm_delete.html'
     success_url = "/quiz_history_teacher"
 
 
 class QuestionsCreation(CreateView):
     model = Question
     fields = "__all__"
-    success_url = "/dashboard_teacher"
+    success_url = "/teacher"
 
 
 class UpdateTeacherProfile(UpdateView):
-    template_name = "templates/base/update_teacher.html"
+    template_name = "templates/base/teachers/update_teacher.html"
     model = User
     fields = ["username", "email", "password"]
-    success_url = "/"
+    success_url = "/teacher"
 
     def get_object(self, queryset=None):
         pk = self.kwargs["pk"]
@@ -246,10 +245,10 @@ class UpdateTeacherProfile(UpdateView):
 
 
 class UpdateStudentProfile(UpdateView):
-    template_name = "templates/base/update_student.html"
+    template_name = "templates/base/students/update_student.html"
     model = User
     fields = ["username", "email", "password"]
-    success_url = "/"
+    success_url = "/student"
 
     def get_object(self, queryset=None):
         pk = self.kwargs["pk"]
@@ -272,7 +271,7 @@ class UpdateStudentProfile(UpdateView):
 
 
 class LeaderScores(TemplateView):
-    template_name = "templates/base/leader_scores.html"
+    template_name = "templates/base/students/leader_scores.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -281,7 +280,7 @@ class LeaderScores(TemplateView):
 
 
 class MyScores(TemplateView):
-    template_name = "templates/base/student_scores.html"
+    template_name = "templates/base/students/student_scores.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -291,7 +290,7 @@ class MyScores(TemplateView):
 
 
 class QuizHistoryViewStudent(TemplateView):
-    template_name = "templates/base/quiz_history.html"
+    template_name = "templates/base/students/quiz/quiz_history.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -305,7 +304,7 @@ class QuizHistoryViewStudent(TemplateView):
 
 
 class QuizHistoryViewTeacher(TemplateView):
-    template_name = "templates/base/quiz_history_teacher.html"
+    template_name = "templates/base/teachers/quiz/quiz_history_teacher.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -315,7 +314,7 @@ class QuizHistoryViewTeacher(TemplateView):
 
 
 class PendingQuizzes(TemplateView):
-    template_name = "templates/base/pending_quiz.html"
+    template_name = "templates/base/students/quiz/pending_quiz.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -326,7 +325,7 @@ class PendingQuizzes(TemplateView):
         return context
 
 class StartQuiz(View):
-    template_name = "templates/base/start_quiz.html"
+    template_name = "templates/base/students/quiz/start_quiz.html"
 
     def get(self, request, pk=None):
         id = pk
@@ -364,7 +363,7 @@ class StartQuiz(View):
             "date": date,
             "forms": question_forms,
         }
-        return render(request, "templates/base/start_quiz.html", inital)
+        return render(request , "templates/base/students/quiz/start_quiz.html" , inital)
 
     def post(self, request, pk=None):
         quiz = Quiz.objects.get(id=pk)
@@ -414,11 +413,11 @@ class StartQuiz(View):
         assignment.completed = True
         assignment.save()
         id = quizscore[0].pk
-        return redirect(f"/quiz_status/{id}/")
+        return redirect(f"/status/{id}/")
 
 class QuizStatus(DetailView):
     model = QuizScore
-    template_name = 'templates/base/quiz_score.html'
+    template_name = 'templates/base/students/quiz/quiz_score.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['quiz_score'] = self.object
@@ -430,7 +429,7 @@ class AdminTeacher(View):
         context = {
             "teacher": teachers,
         }
-        return render(request, "templates/base/admin_teacher.html", context)
+        return render(request , "templates/base/teachers/admin_teacher.html" , context)
 
 class AdminStudent(View):
     def get(self, request):
@@ -438,10 +437,10 @@ class AdminStudent(View):
         context = {
             "students": student,
         }
-        return render(request, "templates/base/admin_students.html", context)
+        return render(request , "templates/base/admin/admin_students.html", context)
 
 class CreateStudent(CreateView):
-    template_name = 'templates/base/student_form.html'
+    template_name = 'templates/base/students/student_form.html'
     model = User
     fields = ['username', 'email', 'password']
 
@@ -455,13 +454,13 @@ class CreateStudent(CreateView):
 
 class UpdateStudent(UpdateView):
     model = User
-    template_name = 'templates/base/student_form.html'
+    template_name = 'templates/base/students/student_form.html'
     fields = ['username', 'email', 'password']
 
 class DeleteStudent(DeleteView):
     model = User
     template_name = 'templates/base/delete_confirm.html'
-    success_url = "/dashboard_teacher"
+    success_url = "/teacher"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -470,13 +469,13 @@ class DeleteStudent(DeleteView):
 
 class UpdateTeacher(UpdateView):
     model = User
-    template_name = 'templates/base/student_form.html'
+    template_name = 'templates/base/students/student_form.html'
     fields = ['username', 'email', 'password']
 
 class DeleteTeacher(DeleteView):
     model = User
     template_name = 'templates/base/delete_confirm.html'
-    success_url = "/dashboard_teacher"
+    success_url = "/teacher"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -484,7 +483,7 @@ class DeleteTeacher(DeleteView):
         return context
 
 class CreateTeacher(CreateView):
-    template_name = 'templates/base/teacher_form.html'
+    template_name = 'templates/base/teachers/teacher_form.html'
     model = User
     fields = ['username', 'email', 'password']
 
@@ -502,7 +501,7 @@ class StudentAdminQuizzes(View):
         user = User.objects.get(pk = pk)
         quizzes = QuizScore.objects.filter(user_id = user)
         context = {'quizzes': quizzes}
-        return render(request, 'templates/base/student_admin_quizzes.html', context)
+        return render(request , 'templates/base/admin/student_admin_quizzes.html', context)
 
 class TeacherAdminQuizzes(View):
 
@@ -510,10 +509,10 @@ class TeacherAdminQuizzes(View):
         user = User.objects.get(pk = pk)
         quizzes = QuizScore.objects.filter(quiz_id__teacher = user)
         context = {'quizzes': quizzes}
-        return render(request, 'templates/base/teacher_admin_quizzes.html', context)
+        return render(request , 'templates/base/teachers/teacher_admin_quizzes.html' , context)
 
 class Stats(TemplateView):
-    template_name = 'templates/base/statistics.html'
+    template_name = 'templates/base/admin/statistics.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         data = []

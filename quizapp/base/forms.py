@@ -1,6 +1,6 @@
 from django.forms import inlineformset_factory
 from django import forms
-from .models import Quiz, Question, Answer
+from base.models import Quiz, Question, Answer
 
 
 class QuizForm(forms.ModelForm):
@@ -21,6 +21,7 @@ class QuizForm(forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
+    """ This form have all the fields of Question models which is needed for the quiz. It is used in QuizFormSet. """
     class Meta:
         model = Question
         fields = "__all__"
@@ -40,34 +41,7 @@ QuizFormSet = inlineformset_factory(
 
 
 class AnswerForm(forms.ModelForm):
+    """ This is a form for students through which questions are displayed to the students during their quiz. """
     class Meta:
         model = Answer
         fields = ["answer_text"]
-
-    # def __init__(self, *args, **kwargs):
-    #     question = kwargs.pop("question", None)
-    #     super().__init__(*args, **kwargs)
-    #     if question:
-    #         self.initial["question"] = question
-    #
-    #     answer_options = question.answer_options if question else None
-    #     if answer_options == "TRUEFALSE":
-    #         self.fields["answer_text"] = forms.ChoiceField(
-    #             choices = [("True", "True"), ("False", "False")],
-    #             widget = forms.RadioSelect,
-    #             required = True,
-    #         )
-    #     # if question.answer_options == "TRUEFALSE":
-    #     #     self.fields["answer_text"] = forms.BooleanField(
-    #     #         # widget = forms.RadioSelect ,
-    #     #         required = True,
-    #     #     )
-    #     elif question.answer_options == "Short":
-    #         pass
-    #     else:
-    #         # add additional fields for other answer options
-    #         pass
-
-            # for i in range(question.num_choices):
-            #     self.fields[f"choice_{i}"] = forms.CharField(required = True)
-

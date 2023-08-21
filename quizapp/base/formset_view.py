@@ -2,17 +2,18 @@ from django.db import transaction , IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
-from .models import User, QuizAssignment, ClassroomStudentEnrolled
-from .forms import QuizForm, QuizFormSet
+from base.models import User, QuizAssignment, ClassroomStudentEnrolled
+from base.forms import QuizForm, QuizFormSet
 
 from django.views.generic.edit import CreateView
 from .models import Quiz
 
 class QuizCreateView(CreateView):
+    """ This class creates Quiz for students along with the Questions using a formset. """
     model = Quiz
     form_class = QuizForm
-    template_name = "templates/base/quiz_question_form.html"
-    success_url = "/dashboard_teacher"
+    template_name = "templates/base/teachers/quiz/quiz_question_form.html"
+    success_url = "/teacher"
 
     def get_context_data(self, **kwargs):
         current_user = self.request.user
@@ -63,5 +64,5 @@ class QuizCreateView(CreateView):
         )
 
     def get_success_url(self):
-        return redirect("/dashboard_teacher")
+        return redirect("/teacher")
 

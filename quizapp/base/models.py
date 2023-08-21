@@ -1,10 +1,12 @@
-import datetime
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission, UserManager
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
+class TimeStampModel(models.Model):
+    """This is a timestamp model which creates track of all other models"""
+    created_at = models.DateTimeField(auto_now_add = True)
+    updated_at = models.DateTimeField(auto_now_add = True)
+    class Meta:
+        abstract = True
 
 class StudentManager(models.Manager):
     def get_queryset(self):
@@ -17,11 +19,14 @@ class TeacherManager(models.Manager):
 
 
 class User(AbstractUser):
+    """This is a user model which can be teacher, student or an admin"""
     username = models.CharField(max_length=255, unique=True, null=False, blank=False)
     email = models.EmailField(unique=True, max_length=255)
     password = models.CharField(max_length=128)
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add = True)
+    updated_at = models.DateTimeField(auto_now_add = True)
     objects = UserManager()
     students = StudentManager()
     teachers = TeacherManager()
@@ -41,15 +46,16 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-class Classroom(models.Model):
+class Classroom(TimeStampModel):
+    """This is a model for classroom which is created by teacher and consists of different students"""
     name = models.CharField(max_length = 128, null = False, blank = False, default = "Class 1")
     students = models.ManyToManyField(User, related_name = 'students_classroom', limit_choices_to = {'is_student': True}, through = 'ClassroomStudentEnrolled')
     teacher = models.ForeignKey(User, on_delete = models.CASCADE, limit_choices_to = {'is_teacher': True})
-    created = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
         return self.name
-class Quiz(models.Model):
+class Quiz(TimeStampModel):
+    """This is a quiz model which have all the necessary fields required for the quiz"""
     difficulty_choices = [
         ("EASY", "Easy"),
         ("MEDIUM", "Medium"),
@@ -84,12 +90,10 @@ class Quiz(models.Model):
     total_score = models.IntegerField()
     question_numbers = models.IntegerField(default=1)
     required_score = models.IntegerField()
-    created = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="created_quizzes",
     )
     classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
-    # last_date = models.DateTimeField(default = datetime.datetime.today)
     students = models.ManyToManyField(User, through = 'QuizAssignment', related_name = 'assigned_quizzes', limit_choices_to = {'is_student': True})
     objects = models.Manager()
 
@@ -99,12 +103,9 @@ class Quiz(models.Model):
     def get_questions(self):
         self.quiz_question.all()
 
-    # def save(self, *args, **kwargs):
-    #     self.last_date = datetime.timedelta(days=2)
-    #     super(Quiz, self).save(*args, **kwargs)
 
-
-class Question(models.Model):
+class Question(TimeStampModel):
+    """This is a questions model which is used by Quiz to create different questions inside one Quiz"""
     answer_choices = [
         ("SHORT", "Short"),
         ("MULTIPLE", "Multiple"),
@@ -125,14 +126,14 @@ class Question(models.Model):
         return self.question_answer.all()
 
 
-class Answer(models.Model):
+class Answer(TimeStampModel):
+    """This is an answer model which is related to Question model and Student when answers a question it gets created"""
     question = models.ForeignKey(
         Question, on_delete=models.CASCADE, related_name="question_answer"
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     answer_text = models.CharField(max_length=255)
     is_correct = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return (
@@ -145,11 +146,11 @@ class LeaderScores(models.Manager):
         return super().get_queryset().order_by("-score")[:5]
 
 
-class QuizScore(models.Model):
+class QuizScore(TimeStampModel):
+    """This model have all the scores and status of students for a specific quiz"""
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     score = models.IntegerField(null=False, blank=False)
-    timestamp = models.DateTimeField(auto_now=True)
     status_pass = models.BooleanField(default=False)
     objects = models.Manager()
     leaders = LeaderScores()
@@ -157,15 +158,16 @@ class QuizScore(models.Model):
     def __str__(self):
         return f"{self.user_id} - {self.quiz_id} - {self.score}"
 
-class ClassroomStudentEnrolled(models.Model):
+class ClassroomStudentEnrolled(TimeStampModel):
+    """This is a model which keeps track that which student is enrolled in which classroom"""
     classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
     student = models.ForeignKey(User, on_delete = models.CASCADE, limit_choices_to = {'is_student': True})
-    created = models.DateTimeField(auto_now_add = True)
-
     def __str__(self):
         return f"{self.classroom} - {self.student}"
 
-class QuizAssignment(models.Model):
+class QuizAssignment(TimeStampModel):
+    """This model gets triggered when a teacher assigns any quiz to student, and it makes a relationship between Quiz
+    and Student. It also keeps the track whether the quiz is completed or not."""
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
@@ -177,10 +179,3 @@ class QuizAssignment(models.Model):
     def __str__(self):
         return f"{self.student} - {self.quiz}"
 
-
-# @receiver(post_save, sender= Quiz)
-# def add_order_items(sender, instance, **kwargs):
-#     instance.last_date = datetime.timedelta(days = 2)
-#     last_date_str = str(instance.last_date)
-#     instance.last_date = datetime.datetime.now() + datetime.timedelta(days = 2)
-#     instance.save()

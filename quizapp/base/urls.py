@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views, pdf_view, classroom_views
-from . import formset_view
+from base import views, pdf_view, classroom_views
+from base import formset_view
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -14,71 +14,69 @@ urlpatterns = [
     path("forgot", views.forgot, name="forgot-pw"),
     path("reset_pw/<str:pk>/<str:encode>/", views.reset_password, name="reset-pw"),
     path(
-        "dashboard_teacher",
+        "teacher",
         login_required(views.DashboardTeacher.as_view()),
         name="dashboard-teacher",
     ),
     path(
-        "dashboard_student",
+        "student",
         login_required(views.DashboardStudent.as_view()),
         name="dashboard-student",
     ),
     path(
-        "dashboard_admin",
+        "admin",
         login_required(views.DashboardAdmin.as_view()),
         name = "dashboard-admin",
     ),
     path(
-        "update_teacher/<str:pk>/",
+        "teacher/<str:pk>/",
         login_required(views.UpdateTeacherProfile.as_view()),
         name="update-teacher",
     ),
     path(
-        "update_student/<str:pk>/",
+        "student/<str:pk>/",
         login_required(views.UpdateStudentProfile.as_view()),
         name="update-student",
     ),
-    # path('quiz_create', login_required(views.QuizCreation.as_view()), name = 'quiz-create'),
-    # path('question_create', login_required(views.QuestionsCreation.as_view()), name = 'question-create'),
     path("leaders", login_required(views.LeaderScores.as_view()), name="leaders"),
-    path("myscores", login_required(views.MyScores.as_view()), name="myscores"),
+    path("scores", login_required(views.MyScores.as_view()), name="myscores"),
     path(
-        "quiz_history",
+        "student/history",
         login_required(views.QuizHistoryViewStudent.as_view()),
         name="quiz-history",
     ),
     path(
-        "quiz_history_teacher",
+        "quiz/history",
         login_required(views.QuizHistoryViewTeacher.as_view()),
         name="quiz-history-teacher",
     ),
     path(
-        "quiz_update/<int:pk>/",
+        "quiz/<int:pk>/update",
         login_required(views.QuizUpdateDetail.as_view()),
         name="quiz-update",
     ),
     path(
-        "quiz_delete/<int:pk>/",
+        "quiz/<int:pk>/delete",
         login_required(views.QuizDelete.as_view()),
         name="quiz-delete",
     ),
     path(
-        "pending-quiz",
+        "pending/quizzes",
         login_required(views.PendingQuizzes.as_view()),
         name="pending-quiz",
     ),
     path(
-        "quiz_create",
+        "create/quiz",
         login_required(formset_view.QuizCreateView.as_view()),
         name="quiz-create",
     ),
     path(
-        "quiz_start/<int:pk>",
+        "quiz/<int:pk>",
         login_required(views.StartQuiz.as_view()),
         name="quiz-start",
     ),
     path(
-        "quiz_status/<int:pk>/",
+        "status/<int:pk>/",
         login_required(views.QuizStatus.as_view()),
         name = "quiz_status",
     ),
@@ -93,67 +91,67 @@ urlpatterns = [
         name = "students",
     ),
     path(
-        "student_create",
+        "student/create",
         login_required(views.CreateStudent.as_view()),
         name = "student-create",
     ),
     path(
-        "student_update/<int:pk>/",
+        "student/update/<int:pk>/",
         login_required(views.UpdateStudent.as_view()),
         name = "student-update",
     ),
     path(
-        "student_delete/<int:pk>/",
+        "student/delete/<int:pk>/",
         login_required(views.DeleteStudent.as_view()),
         name = "student-delete",
     ),
     path(
-        "teacher_create",
+        "teacher/create",
         login_required(views.CreateTeacher.as_view()),
         name = "teacher-create",
     ),
     path(
-        "teacher_update/<int:pk>/",
+        "teacher/update/<int:pk>/",
         login_required(views.UpdateTeacher.as_view()),
         name = "teacher-update",
     ),
     path(
-        "teacher_delete/<int:pk>/",
+        "teacher/delete/<int:pk>/",
         login_required(views.DeleteTeacher.as_view()),
         name = "teacher-delete",
     ),
     path(
-        "quizzes_student/<int:pk>/",
+        "quizzes/student/<int:pk>/",
         login_required(views.StudentAdminQuizzes.as_view()),
         name = "student-admin-quizzes",
     ),
     path(
-        "quizzes_teacher/<int:pk>/",
+        "quizzes/teacher/<int:pk>/",
         login_required(views.TeacherAdminQuizzes.as_view()),
         name = "teacher-admin-quizzes",
     ),
     path(
-        "stats/",
+        "statistics/",
         login_required(views.Stats.as_view()),
         name = "stats",
     ),
     path(
         "pdf/<int:pk>/",
-        login_required(pdf_view.pdf),
+        login_required(pdf_view.pdf_report_generator),
         name = "pdf",
     ),
     path(
-        "classroom_create",
+        "classroom/create",
         login_required(classroom_views.ClassroomCreate.as_view()),
         name = "create-classroom",
     ),
     path(
-        "classroom_update/<str:pk>",
+        "classroom/<str:pk>/update",
         login_required(classroom_views.ClassroomUpdate.as_view()),
         name = "update-classroom",
     ),
     path(
-        "classroom_delete/<str:pk>",
+        "classroom/<str:pk>/delete",
         login_required(classroom_views.ClassroomDelete.as_view()),
         name = "delete-classroom",
     ),
@@ -163,7 +161,7 @@ urlpatterns = [
         name = "classrooms",
     ),
     path(
-        "classrooms_student",
+        "classrooms/student",
         login_required(classroom_views.ClassroomStudentTemplate.as_view()),
         name = "classrooms-student",
     ),

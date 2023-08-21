@@ -1,5 +1,9 @@
 import os
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -17,7 +21,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "channels" ,
-    "django_crontab" ,
+    "django_crontab",
     "django_cron",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -25,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "base",
 ]
 
@@ -32,10 +37,15 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
 ]
 
 ROOT_URLCONF = "quizapp.urls"
@@ -64,9 +74,9 @@ ASGI_APPLICATION = 'quizapp.asgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "quizes",
-        "USER": "postgres",
-        "PASSWORD": "1234",
+        "NAME": env('DATABASE_NAME'),
+        "USER": env("DATABASE_USER"),
+        "PASSWORD": env("DATABASE_PASS"),
         "HOST": "localhost",
         "PORT": "5432",
     }
