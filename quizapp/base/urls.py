@@ -13,6 +13,9 @@ urlpatterns = [
     path("logout", views.logout_user, name="logout"),
     path("forgot", views.forgot, name="forgot-pw"),
     path("reset_pw/<str:pk>/<str:encode>/", views.reset_password, name="reset-pw"),
+    path("isstudent", views.is_student, name = "is-student"),
+    path("isteacher", views.is_teacher, name = "is-teacher"),
+
     path(
         "dashboard_teacher",
         login_required(views.DashboardTeacher.as_view()),
@@ -165,4 +168,6 @@ urlpatterns = [
         login_required(classroom_views.ClassroomStudentTemplate.as_view()),
         name="classrooms-student",
     ),
+    path('video/', views.video, name='video'),
+
 ]

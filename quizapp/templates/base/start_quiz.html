@@ -19,6 +19,9 @@
     </span>
 </h3>
 <hr>
+    <div style="position: absolute; right: -10%; z-index: 1;">
+    <img src="{% url 'video' %}" width="50%" alt="img"/>
+</div>
     <form method="post" id="submits">
 
     {% for question_form in forms %}
@@ -33,6 +36,9 @@
 
     <hr>
     <br>
+    <div>
+
+
 {% endblock %}
 {% block end_script %}
 

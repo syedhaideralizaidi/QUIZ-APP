@@ -1,11 +1,12 @@
 {% extends 'templates/base/main.html' %}
-
+{% load static %}
+{% load socialaccount %}
 {% block content %}
 
 <div class="container">
 <hr>
     <center>
-        <h3 class="mb-4" style="font-size: 2.5rem; color: black; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">Welcome to our Learning Hub</h3>    <hr></center>
+        <h3 class="mb-4" id="head" style="font-size: 2.5rem; color: black; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">Welcome to our Learning Hub</h3>    <hr></center>
 <br>
 
   <div class="row">
@@ -17,6 +18,13 @@
           <a href="{% url 'student-login' %}" class="btn btn-success">Login</a>
             <hr>
             <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'student-signup' %}" style="color: black">No account? Sign-up as Student</a></button>
+ <span>
+               <form action="{% provider_login_url 'google' %}" method="post">
+                  {% csrf_token %}
+                   <button type="submit" class="btn btn-link" style="color: darkblue"><a href="{% url 'dashboard-student' %}" style="color: black"> <img src="{% static 'images/google.png' %}" alt="Google" height="50px">
+                       Sign in with Google</a></button>
+               </form>
+</span>
 
         </div>
       </div>
@@ -29,6 +37,11 @@
           <a href="{% url 'teacher-login' %}" class="btn btn-warning">Login</a>
             <hr>
             <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'teacher-signup' %}" style="color: black">No account? Sign-up as Teacher</a></button>
+           <span>
+                <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'account_login' %}" style="color: black">
+               <img src="{% static 'images/google.png' %}" alt="Google" height="50px">
+              Login with Gmail</a></button>
+</span>
 
         </div>
       </div>
@@ -41,7 +54,9 @@
           <p class="card-text">Login as Admin</p>
           <a href="{% url 'admin' %}" class="btn btn-danger">Login</a>
             <hr>
-{#            <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'home' %}" style="color: black">No account? You cannot Access this.</a></button>#}
+{#            <button type="button" class="btn btn-link" style="color: black"><a href="{% url 'home' %}" style="color: black"></a></button>#}
+    <br>
+      <br><p></p>
  <p style="color: black">No account? You cannot Access this.</p>
 
         </div>
@@ -62,5 +77,19 @@
   transform: translateY(-5px);
 }
 </style>
+
+{% endblock %}
+
+{% block end_script %}
+    <script>
+        var socket = new WebSocket('ws://localhost:8000/ws/ac');
+        socket.onmessage= function (event){
+            document.querySelector('#head').innerText = event.data;
+        }
+
+        function IsStudent(){
+
+        }
+    </script>
 
 {% endblock %}

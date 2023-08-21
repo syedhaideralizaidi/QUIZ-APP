@@ -1,8 +1,10 @@
 from base64 import urlsafe_b64encode
 from datetime import datetime
+
+import cv2
 from django.contrib.auth import login, logout
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse , HttpResponseBadRequest , StreamingHttpResponse
 from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes
 from django.views import View
@@ -13,11 +15,12 @@ from django.views.generic import (
     DeleteView,
     DetailView,
 )
+from flask import Response , Flask
 
 from .forms import AnswerForm
 from .helpers import send_forgot_password_mail
 from .models import User, Quiz, Question, QuizScore, QuizAssignment, Answer
-
+from .tasks import test_func
 
 def home(request):
     return render(request, "templates/base/home.html")
@@ -144,6 +147,15 @@ def reset_password(request, pk, encode):
     else:
         return render(request, "templates/base/reset_password.html")
 
+def is_student(request):
+    print("In student")
+    request.user.is_student = True
+    return redirect("/dashboard_student")
+
+def is_teacher(request):
+    request.user.is_teacher = True
+    request.user.is_staff = True
+    request.user.is_superuser = True
 
 class SignupTeacher(CreateView):
     model = User
@@ -174,6 +186,7 @@ class DashboardTeacher(TemplateView):
 
 
 class DashboardStudent(TemplateView):
+    test_func.delay()
     template_name = "templates/base/dashboard_student.html"
 
 
@@ -524,3 +537,28 @@ class Stats(TemplateView):
         context["new_data"] = new_data
 
         return context
+
+
+
+def generate_frame():
+    camera = cv2.VideoCapture(0)
+    while True:
+        success, frame = camera.read()
+        # if success :
+        #     cv2.imshow('Frame' , frame)
+        #     cv2.waitKey(0)
+        #
+        # camera.release()
+        # cv2.destroyAllWindows()
+
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+def video(request):
+    return StreamingHttpResponse(generate_frame(), content_type='multipart/x-mixed-replace; boundary=frame')
+
+

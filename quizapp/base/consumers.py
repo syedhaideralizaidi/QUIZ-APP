@@ -1,6 +1,7 @@
 import os
 from channels.consumer import SyncConsumer, AsyncConsumer
 from channels.exceptions import StopConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth import get_user_model
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.development")
@@ -27,7 +28,8 @@ class MySyncConsumer(SyncConsumer):
         self.send(
             {
                 "type": "websocket.send",
-                "text": f"Quizzes left: {assigned_quiz.count()} ---------- Quizzes completed: {completed_quiz.count()}",
+                "text": f"""Quizzes left: {assigned_quiz.count()} 
+                (Quizzes completed: {completed_quiz.count()})""",
             }
         )
 
@@ -52,3 +54,16 @@ class MyAsyncConsumer(AsyncConsumer):
     async def websocket_disconnect(self, event):
         print("Websocket Disconnected...", event)
         raise StopConsumer()
+
+
+class NewConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.channel_layer.group_add('users', self.channel_name)
+        await self.accept()
+
+    async def disconnect(self):
+        await self.channel_layer.group_discard('users', self.channel_name)
+
+    async def send_jokes(self, event):
+        text_message = event['text']
+        await self.send(text_message)
