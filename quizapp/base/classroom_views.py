@@ -2,7 +2,7 @@ from django.views.generic import CreateView, UpdateView, TemplateView, DeleteVie
 from .models import Classroom, ClassroomStudentEnrolled
 
 
-class ClassroomCreate(CreateView):
+class ClassroomCreate(CreateView):# ToDO: docstring is missing
     model = Classroom
     fields = ["name", "students"]
     success_url = "/dashboard_teacher"
@@ -14,13 +14,13 @@ class ClassroomCreate(CreateView):
         return super().form_valid(form)
 
 
-class ClassroomUpdate(UpdateView):
+class ClassroomUpdate(UpdateView):# ToDO: docstring is missing
     model = Classroom
     fields = ["name", "students"]
     success_url = "/dashboard_teacher"
 
 
-class ClassroomTemplate(TemplateView):
+class ClassroomTemplate(TemplateView):# ToDO: docstring is missing
     model = Classroom
     template_name = "templates/base/classroom_template.html"
 
@@ -33,12 +33,12 @@ class ClassroomTemplate(TemplateView):
         return context
 
 
-class ClassroomDelete(DeleteView):
+class ClassroomDelete(DeleteView):# ToDO: docstring is missing
     model = Classroom
     success_url = "/classrooms"
 
 
-class ClassroomStudentTemplate(TemplateView):
+class ClassroomStudentTemplate(TemplateView):# ToDO: docstring is missing
     model = Classroom
     template_name = "templates/base/classroom_student_template.html"
 

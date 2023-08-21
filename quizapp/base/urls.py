@@ -14,69 +14,69 @@ urlpatterns = [
     path("forgot", views.forgot, name="forgot-pw"),
     path("reset_pw/<str:pk>/<str:encode>/", views.reset_password, name="reset-pw"),
     path(
-        "dashboard_teacher",
+        "dashboard_teacher", # ToDo: This path should be dashbaord/teacher/ and find a way to avoid the dashbaord keyword duplication
         login_required(views.DashboardTeacher.as_view()),
         name="dashboard-teacher",
     ),
     path(
-        "dashboard_student",
+        "dashboard_student", # ToDo: This path should be dashbaord/student/
         login_required(views.DashboardStudent.as_view()),
         name="dashboard-student",
     ),
     path(
-        "dashboard_admin",
+        "dashboard_admin", # ToDo: This path should be dashbaord/admin/
         login_required(views.DashboardAdmin.as_view()),
         name="dashboard-admin",
     ),
     path(
-        "update_teacher/<str:pk>/",
+        "update_teacher/<str:pk>/", # ToDo: This path should be update/teacher/ and find a way to avoid the update keyword duplication
         login_required(views.UpdateTeacherProfile.as_view()),
         name="update-teacher",
     ),
     path(
-        "update_student/<str:pk>/",
+        "update_student/<str:pk>/", # ToDo: This path should be update/student/
         login_required(views.UpdateStudentProfile.as_view()),
         name="update-student",
     ),
     path("leaders", login_required(views.LeaderScores.as_view()), name="leaders"),
     path("myscores", login_required(views.MyScores.as_view()), name="myscores"),
     path(
-        "quiz_history",
+        "quiz_history",# ToDo: This path should be quiz/history/ and find a way to avoid the quiz keyword duplication
         login_required(views.QuizHistoryViewStudent.as_view()),
         name="quiz-history",
     ),
     path(
-        "quiz_history_teacher",
+        "quiz_history_teacher",# ToDo: This path should be quiz/history/teacher
         login_required(views.QuizHistoryViewTeacher.as_view()),
         name="quiz-history-teacher",
     ),
     path(
-        "quiz_update/<int:pk>/",
+        "quiz_update/<int:pk>/",# ToDo: This path should be quiz/update
         login_required(views.QuizUpdateDetail.as_view()),
         name="quiz-update",
     ),
     path(
-        "quiz_delete/<int:pk>/",
+        "quiz_delete/<int:pk>/",# ToDo: This path should be quiz/delete/id
         login_required(views.QuizDelete.as_view()),
         name="quiz-delete",
     ),
     path(
-        "pending-quiz",
+        "pending-quiz",# ToDo: This path should be quiz/pending
         login_required(views.PendingQuizzes.as_view()),
         name="pending-quiz",
     ),
     path(
-        "quiz_create",
+        "quiz_create",# ToDo: This path should be quiz/create
         login_required(formset_view.QuizCreateView.as_view()),
         name="quiz-create",
     ),
     path(
-        "quiz_start/<int:pk>",
+        "quiz_start/<int:pk>",# ToDo: This path should be quiz/start/id
         login_required(views.StartQuiz.as_view()),
         name="quiz-start",
     ),
     path(
-        "quiz_status/<int:pk>/",
+        "quiz_status/<int:pk>/",# ToDo: This path should be quiz/status/id
         login_required(views.QuizStatus.as_view()),
         name="quiz_status",
     ),
@@ -91,35 +91,36 @@ urlpatterns = [
         name="students",
     ),
     path(
-        "student_create",
+        "student_create",# ToDo: This path should be student/create
         login_required(views.CreateStudent.as_view()),
         name="student-create",
     ),
     path(
-        "student_update/<int:pk>/",
+        "student_update/<int:pk>/",# ToDo: This path should be student/update/id
         login_required(views.UpdateStudent.as_view()),
         name="student-update",
     ),
     path(
-        "student_delete/<int:pk>/",
+        "student_delete/<int:pk>/",# ToDo: This path should be student/delete/id
         login_required(views.DeleteStudent.as_view()),
         name="student-delete",
     ),
     path(
-        "teacher_create",
+        "teacher_create",# ToDo: This path should be teacher/create
         login_required(views.CreateTeacher.as_view()),
         name="teacher-create",
     ),
     path(
-        "teacher_update/<int:pk>/",
+        "teacher_update/<int:pk>/",# ToDo: This path should be teacher/update/id
         login_required(views.UpdateTeacher.as_view()),
         name="teacher-update",
     ),
     path(
-        "teacher_delete/<int:pk>/",
+        "teacher_delete/<int:pk>/",# ToDo: This path should be teacher/delete/id
         login_required(views.DeleteTeacher.as_view()),
         name="teacher-delete",
     ),
+    # ToDo: re-create all the urls till the bottom and you can create a better naming convention
     path(
         "quizzes_student/<int:pk>/",
         login_required(views.StudentAdminQuizzes.as_view()),

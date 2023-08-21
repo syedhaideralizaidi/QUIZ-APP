@@ -4,12 +4,12 @@ import smtplib, ssl
 
 
 def send_forgot_password_mail(user_obj, encode_pk):
-    port = 465
-    smtp_server = "smtp.gmail.com"
+    port = 465  # ToDo: this should be set in the setting files, and imported from settings
+    smtp_server = "smtp.gmail.com"  # ToDo: this should be set in the setting files, and imported from settings
     receiver_email = user_obj.email
     token = str(uuid.uuid4())
-    USERNAME = "haider.zaidiy@gmail.com"
-    PASSWORD = "arlgrijgssodacgi"
+    USERNAME = "haider.zaidiy@gmail.com"    # ToDo: this should be set in the setting files, and imported from settings
+    PASSWORD = "arlgrijgssodacgi"   # ToDo: this should be set in the setting files, and imported from settings
     TEXT = f""" Hi, click on the link to reset password 
     http://127.0.0.1:8000/reset_pw/{user_obj.id}/{encode_pk[0]}/"""
     SUBJECT = "Reset your Password"
@@ -22,10 +22,10 @@ def send_forgot_password_mail(user_obj, encode_pk):
 
 
 def send_quiz_email(user_obj):
-    port = 465
-    smtp_server = "smtp.gmail.com"
-    USERNAME = "haider.zaidiy@gmail.com"
-    PASSWORD = "arlgrijgssodacgi"
+    port = 465  # ToDo: this should be set in the setting files, and imported from settings
+    smtp_server = "smtp.gmail.com"  # ToDo: this should be set in the setting files, and imported from settings
+    USERNAME = "haider.zaidiy@gmail.com"    # ToDo: this should be set in the setting files, and imported from settings
+    PASSWORD = "arlgrijgssodacgi"   # ToDo: this should be set in the setting files, and imported from settings
     TEXT = f""" You have an assigned Quiz for you.  
     Kindly attempt the quiz before time."""
     SUBJECT = "Unattempted Quiz"

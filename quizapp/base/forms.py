@@ -18,7 +18,7 @@ class QuizForm(forms.ModelForm):
         ]
 
 
-class QuestionForm(forms.ModelForm):
+class QuestionForm(forms.ModelForm):# ToDO: docstring is missing
     class Meta:
         model = Question
         fields = "__all__"
@@ -49,7 +49,7 @@ QuizFormSet = inlineformset_factory(
 )
 
 
-class AnswerForm(forms.ModelForm):
+class AnswerForm(forms.ModelForm):# ToDO: docstring is missing
     class Meta:
         model = Answer
         fields = ["answer_text"]

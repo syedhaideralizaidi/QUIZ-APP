@@ -1,3 +1,4 @@
+# ToDo: This whole settings directory should be in the quizapp/
 import os
 from pathlib import Path
 
@@ -26,7 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "debug_toolbar",
-    "base",
+    "base", # ToDO: base keyword does not explain the functionality of the application, it should be self-explaining
 ]
 
 MIDDLEWARE = [

@@ -12,7 +12,7 @@ class TeacherManager(models.Manager):
         return super().get_queryset().filter(is_teacher=True)
 
 
-class User(AbstractUser):
+class User(AbstractUser): # ToDo: doc string is missing, timestamp created_at and updated_at is missing
     username = models.CharField(max_length=255, unique=True, null=False, blank=False)
     email = models.EmailField(unique=True, max_length=255)
     password = models.CharField(max_length=128)
@@ -38,7 +38,7 @@ class User(AbstractUser):
         return self.username
 
 
-class Classroom(models.Model):
+class Classroom(models.Model): # ToDo: doc string is missing, timestamp updated_at is missing
     name = models.CharField(max_length=128, null=False, blank=False, default="Class 1")
     students = models.ManyToManyField(
         User,
@@ -55,7 +55,7 @@ class Classroom(models.Model):
         return self.name
 
 
-class Quiz(models.Model):
+class Quiz(models.Model):# ToDo: doc string is missing, timestamp updated_at is missing
     difficulty_choices = [
         ("EASY", "Easy"),
         ("MEDIUM", "Medium"),
@@ -113,7 +113,7 @@ class Quiz(models.Model):
         self.quiz_question.all()
 
 
-class Question(models.Model):
+class Question(models.Model):# ToDo: doc string is missing, timestamp created_at and updated_at is missing
     answer_choices = [
         ("SHORT", "Short"),
         ("TRUEFALSE", "True/False"),
@@ -142,7 +142,7 @@ class Question(models.Model):
                 self.correct_answer = "FALSE"
 
 
-class Answer(models.Model):
+class Answer(models.Model):# ToDo: doc string is missing, timestamp updated_at is missing
     question = models.ForeignKey(
         Question, on_delete=models.CASCADE, related_name="question_answer"
     )
@@ -157,12 +157,12 @@ class Answer(models.Model):
         )
 
 
-class LeaderScores(models.Manager):
+class LeaderScores(models.Manager):# ToDo: doc string is missing
     def get_queryset(self):
         return super().get_queryset().order_by("-score")[:5]
 
 
-class QuizScore(models.Model):
+class QuizScore(models.Model):# ToDo: doc string is missing, timestamp created_at and updated_at is missing
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     score = models.IntegerField(null=False, blank=False)
@@ -175,7 +175,7 @@ class QuizScore(models.Model):
         return f"{self.user_id} - {self.quiz_id} - {self.score}"
 
 
-class ClassroomStudentEnrolled(models.Model):
+class ClassroomStudentEnrolled(models.Model):# ToDo: doc string is missing, timestamp updated_at is missing
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     student = models.ForeignKey(
         User, on_delete=models.CASCADE, limit_choices_to={"is_student": True}
@@ -186,7 +186,7 @@ class ClassroomStudentEnrolled(models.Model):
         return f"{self.classroom} - {self.student}"
 
 
-class QuizAssignment(models.Model):
+class QuizAssignment(models.Model):# ToDo: doc string is missing, timestamp created_at and updated_at is missing
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
@@ -197,3 +197,5 @@ class QuizAssignment(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.quiz}"
+
+# ToDO: use the Timestamp inheritance as did in past to remove the duplication

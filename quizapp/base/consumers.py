@@ -10,7 +10,7 @@ django.setup()
 from .models import QuizAssignment
 
 
-class MySyncConsumer(SyncConsumer):
+class MySyncConsumer(SyncConsumer):# ToDO: docstring is missing
     def websocket_connect(self, event):
         self.user = self.scope['url_route']['kwargs']['pk']
         print("Web socket connected...", event)
@@ -36,7 +36,7 @@ class MySyncConsumer(SyncConsumer):
         raise StopConsumer()
 
 
-class MyAsyncConsumer(AsyncConsumer):
+class MyAsyncConsumer(AsyncConsumer):# ToDO: docstring is missing
     async def websocket_connect(self, event):
         print("Web socket connected...", event)
         await self.send({"type": "websocket.accept"})

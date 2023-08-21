@@ -6,7 +6,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from .models import QuizScore, Quiz
 
 
-def pdf(request, pk=None):
+def pdf(request, pk=None):# ToDO: docstring is missing, and use a better name
     buf = io.BytesIO()
 
     doc = SimpleDocTemplate(buf, pagesize=letter)

@@ -2,13 +2,13 @@ from django.db import transaction, IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from .models import User, QuizAssignment, ClassroomStudentEnrolled
+from .models import User, QuizAssignment, ClassroomStudentEnrolled # ToDo: the import should include the whole directory path, and same for all imports
 from .forms import QuizForm, QuizFormSet
 from django.views.generic.edit import CreateView
 from .models import Quiz
 
 
-class QuizCreateView(CreateView):
+class QuizCreateView(CreateView):# ToDO: docstring is missing
     model = Quiz
     form_class = QuizForm
     template_name = "templates/base/quiz_question_form.html"

@@ -5,7 +5,7 @@ from .models import QuizAssignment
 from datetime import timedelta
 
 
-def attempt_quizzes():
+def attempt_quizzes():# ToDO: docstring is missing
     print("In cron job at time:", datetime.datetime.now())
     quizzes = QuizAssignment.objects.filter(completed=False)
     for quiz in quizzes:
