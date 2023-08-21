@@ -1,7 +1,7 @@
 from django.urls import path
-from . import consumers
+from base import consumers
 
 websocket_urlpatterns = [
-    path("ws/sc/<pk>", consumers.MySyncConsumer.as_asgi()),
-    path("ws/ac/<pk>", consumers.MyAsyncConsumer.as_asgi()),
+    path('ws/sc/', consumers.QuizStatusSyncConsumer.as_asgi()),
+    path('ws/ac/', consumers.QuizStatusAsyncConsumer.as_asgi()),
 ]

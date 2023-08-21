@@ -1,7 +1,10 @@
 from base64 import urlsafe_b64encode
 from datetime import datetime
+
 from django.contrib.auth import login, logout
+from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
+from django import forms
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes
@@ -14,7 +17,7 @@ from django.views.generic import (
     DetailView,
 )
 
-from .forms import AnswerForm
+from .forms import QuestionForm, AnswerForm
 from .helpers import send_forgot_password_mail
 from .models import User, Quiz, Question, QuizScore, QuizAssignment, Answer
 
@@ -22,28 +25,29 @@ from .models import User, Quiz, Question, QuizScore, QuizAssignment, Answer
 def home(request):
     return render(request, "templates/base/home.html")
 
-
 def login_admin(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
+        # password = check_password(password)
+        # user = authenticate(request, username=username, password=password)
         user = User.objects.filter(username=username).first()
 
         if User.objects.filter(username=username).exists():
             password = user.check_password(password)
-        else:
+        else :
             context = {
-                "message": "You are not an admin, Login as Admin!",
-                "title": "Login as Admin",
+                "message" : "You are not an admin, Login as Admin!" ,
+                "title" : "Login as Admin" ,
             }
-            return render(request, "templates/base/invalid.html", context)
+            return render(request , "templates/base/invalid.html" , context)
 
         print(user)
         if user is not None and password:
             print(user)
             login(request, user)
             print("Current User", request.user)
-            return redirect("/dashboard_admin")
+            return redirect("/admin")
         else:
             context = {
                 "message": "You are not an admin, Login as Admin!",
@@ -51,26 +55,26 @@ def login_admin(request):
             }
             return render(request, "templates/base/invalid.html", context)
     else:
-        return render(request, "templates/base/login_admin.html")
-
+        return render(request , "templates/base/admin/login_admin.html")
 
 def login_teacher(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
+        # user = authenticate(request, username=username, password=password)
         try:
             user = User.objects.get(username=username, password=password)
         except:
             context = {
-                "message": "You are not a teacher, Signup First!",
-                "title": "Go to home page for Sign Up.",
+                "message" : "You are not a teacher, Signup First!" ,
+                "title" : "Go to home page for Sign Up." ,
             }
-            return render(request, "templates/base/invalid.html", context)
+            return render(request , "templates/base/invalid.html" , context)
         if user is not None and user.is_teacher:
             print(user)
             login(request, user)
             print("Current User", request.user)
-            return redirect("/dashboard_teacher")
+            return redirect("/teacher")
         else:
             context = {
                 "message": "You are not a teacher, Login as Student!",
@@ -78,24 +82,25 @@ def login_teacher(request):
             }
             return render(request, "templates/base/invalid.html", context)
     else:
-        return render(request, "templates/base/login_teacher.html")
+        return render(request , "templates/base/teachers/login_teacher.html")
 
 
 def login_student(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
+        # user = authenticate(request, username=username, password=password, is_student = True)
         try:
             user = User.objects.get(username=username, password=password)
         except:
             context = {
-                "title": "No User, Sign Up first!",
-                "message": "Please Sign Up before Login.",
+                "title" : "No User, Sign Up first!" ,
+                "message" : "Please Sign Up before Login." ,
             }
-            return render(request, "templates/base/invalid.html", context)
+            return render(request , "templates/base/invalid.html" , context)
         if user is not None and user.is_student:
             login(request, user)
-            return redirect("/dashboard_student")
+            return redirect("/student")
         else:
             context = {
                 "title": "No User, Sign Up first!",
@@ -103,7 +108,7 @@ def login_student(request):
             }
             return render(request, "templates/base/invalid.html", context)
     else:
-        return render(request, "templates/base/login_student.html")
+        return render(request , "templates/base/students/login_student.html")
 
 
 def logout_user(request):
@@ -147,7 +152,7 @@ def reset_password(request, pk, encode):
 
 class SignupTeacher(CreateView):
     model = User
-    template_name = "templates/base/signup_teacher.html"
+    template_name = "templates/base/teachers/signup_teacher.html"
     fields = ["username", "email", "password"]
     success_url = "/"
 
@@ -155,12 +160,13 @@ class SignupTeacher(CreateView):
         form.instance.is_teacher = True
         form.instance.is_staff = True
         form.instance.is_superuser = True
+        # form.set_password(form.cleaned_data['password'])
         return super().form_valid(form)
 
 
 class SignupStudent(CreateView):
     model = User
-    template_name = "templates/base/signup_student.html"
+    template_name = "templates/base/students/signup_student.html"
     fields = ["username", "email", "password"]
     success_url = "/"
 
@@ -170,21 +176,20 @@ class SignupStudent(CreateView):
 
 
 class DashboardTeacher(TemplateView):
-    template_name = "templates/base/dashboard_teacher.html"
+    template_name = "templates/base/dashboard/dashboard_teacher.html"
 
 
 class DashboardStudent(TemplateView):
-    template_name = "templates/base/dashboard_student.html"
-
+    template_name = "templates/base/dashboard/dashboard_student.html"
 
 class DashboardAdmin(TemplateView):
-    template_name = "templates/base/dashboard_admin.html"
+    template_name = "templates/base/dashboard/dashboard_admin.html"
 
 
 class QuizCreation(CreateView):
     model = Quiz
     fields = "__all__"
-    success_url = "/dashboard_teacher"
+    success_url = "/teacher"
 
 
 class QuizUpdateDetail(UpdateView):
@@ -197,25 +202,27 @@ class QuizUpdateDetail(UpdateView):
         "category",
         "required_score",
     ]
+    template_name = 'templates/base/teachers/quiz/quiz_form.html'
     success_url = "/quiz_history_teacher"
 
 
 class QuizDelete(DeleteView):
     model = Quiz
+    template_name = 'templates/base/teachers/quiz/quiz_confirm_delete.html'
     success_url = "/quiz_history_teacher"
 
 
 class QuestionsCreation(CreateView):
     model = Question
     fields = "__all__"
-    success_url = "/dashboard_teacher"
+    success_url = "/teacher"
 
 
 class UpdateTeacherProfile(UpdateView):
-    template_name = "templates/base/update_teacher.html"
+    template_name = "templates/base/teachers/update_teacher.html"
     model = User
     fields = ["username", "email", "password"]
-    success_url = "/"
+    success_url = "/teacher"
 
     def get_object(self, queryset=None):
         pk = self.kwargs["pk"]
@@ -230,16 +237,18 @@ class UpdateTeacherProfile(UpdateView):
     def form_valid(self, form):
         try:
             form.save()
+            # user = form.instance
+            # login(self.request, user)
         except Exception as e:
             return HttpResponseBadRequest("An error occurred")
         return super().form_valid(form)
 
 
 class UpdateStudentProfile(UpdateView):
-    template_name = "templates/base/update_student.html"
+    template_name = "templates/base/students/update_student.html"
     model = User
     fields = ["username", "email", "password"]
-    success_url = "/"
+    success_url = "/student"
 
     def get_object(self, queryset=None):
         pk = self.kwargs["pk"]
@@ -254,13 +263,15 @@ class UpdateStudentProfile(UpdateView):
     def form_valid(self, form):
         try:
             form.save()
+            # user = form.instance
+            # login(self.request, user)
         except Exception as e:
             return HttpResponseBadRequest("An error occurred")
         return super().form_valid(form)
 
 
 class LeaderScores(TemplateView):
-    template_name = "templates/base/leader_scores.html"
+    template_name = "templates/base/students/leader_scores.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -269,7 +280,7 @@ class LeaderScores(TemplateView):
 
 
 class MyScores(TemplateView):
-    template_name = "templates/base/student_scores.html"
+    template_name = "templates/base/students/student_scores.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -279,25 +290,21 @@ class MyScores(TemplateView):
 
 
 class QuizHistoryViewStudent(TemplateView):
-    template_name = "templates/base/quiz_history.html"
+    template_name = "templates/base/students/quiz/quiz_history.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         student = QuizScore.objects.filter(user_id=self.request.user.pk)
         context["my_quizzes"] = student
-        search_input = self.request.GET.get("search-area") or ""
+        search_input = self.request.GET.get('search-area') or ''
         if search_input:
-            context["my_quizzes"] = context["my_quizzes"].filter(
-                quiz_id__category__icontains=search_input
-            ) or context["my_quizzes"].filter(
-                quiz_id__difficulty_level__icontains=search_input
-            )
-        context["search_input"] = search_input
+            context['my_quizzes'] = context['my_quizzes'].filter(quiz_id__category__icontains= search_input) or context['my_quizzes'].filter(quiz_id__difficulty_level__icontains= search_input)
+        context['search_input'] = search_input
         return context
 
 
 class QuizHistoryViewTeacher(TemplateView):
-    template_name = "templates/base/quiz_history_teacher.html"
+    template_name = "templates/base/teachers/quiz/quiz_history_teacher.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -307,7 +314,7 @@ class QuizHistoryViewTeacher(TemplateView):
 
 
 class PendingQuizzes(TemplateView):
-    template_name = "templates/base/pending_quiz.html"
+    template_name = "templates/base/students/quiz/pending_quiz.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -317,9 +324,8 @@ class PendingQuizzes(TemplateView):
         context["my_quizzes"] = student
         return context
 
-
 class StartQuiz(View):
-    template_name = "templates/base/start_quiz.html"
+    template_name = "templates/base/students/quiz/start_quiz.html"
 
     def get(self, request, pk=None):
         id = pk
@@ -327,9 +333,29 @@ class StartQuiz(View):
         teacher = assigned_quiz.teacher
         date = datetime.now()
         questions = Question.objects.filter(quiz_id=assigned_quiz.pk)
+        # question_forms = [(question, AnswerForm()) for question in questions]
+        # print(question_forms)
+
+        # question_forms = []
+        # for question in questions:
+        #     form = AnswerForm(question = question)
+        #     question_forms.append((question, form))
+
+
         question_forms = []
         for question in questions:
-            form = AnswerForm(question=question)
+            answer_options = question.answer_options
+            if answer_options == "TRUEFALSE":
+                form = AnswerForm(initial = {"question": question})
+                form.fields["answer_text"] = forms.ChoiceField(
+                    choices = [("TRUE", "TRUE"), ("FALSE", "FALSE")],
+                    widget = forms.RadioSelect,
+                    label = "True or False"
+                )
+            elif answer_options == "SHORT":
+                form = AnswerForm(initial = {"question": question})
+            else:
+                form = AnswerForm()
             question_forms.append((question, form))
         inital = {
             "teacher": teacher,
@@ -337,7 +363,7 @@ class StartQuiz(View):
             "date": date,
             "forms": question_forms,
         }
-        return render(request, "templates/base/start_quiz.html", inital)
+        return render(request , "templates/base/students/quiz/start_quiz.html" , inital)
 
     def post(self, request, pk=None):
         quiz = Quiz.objects.get(id=pk)
@@ -359,9 +385,9 @@ class StartQuiz(View):
             ans.save()
             count += 1
 
-        # Checking Answers and Creating Scores
+        #Checking Answers and Creating Scores
         correct_answers = Answer.objects.filter(
-            user=self.request.user, question__quiz=quiz, is_correct=True
+            user = self.request.user, question__quiz = quiz, is_correct = True
         ).distinct("question")
 
         total_score = 0
@@ -376,129 +402,117 @@ class StartQuiz(View):
             status_pass = False
 
         quizscore = QuizScore.objects.get_or_create(
-            user_id=self.request.user,
-            quiz_id=quiz,
-            score=total_score,
-            status_pass=status_pass,
+            user_id = self.request.user,
+            quiz_id = quiz,
+            score = total_score,
+            status_pass = status_pass,
         )
 
-        # Checking end
+        #Checking end
         assignment = QuizAssignment.objects.get(quiz=quiz, student=self.request.user)
         assignment.completed = True
         assignment.save()
         id = quizscore[0].pk
-        return redirect(f"/quiz_status/{id}/")
-
+        return redirect(f"/status/{id}/")
 
 class QuizStatus(DetailView):
     model = QuizScore
-    template_name = "templates/base/quiz_score.html"
-
+    template_name = 'templates/base/students/quiz/quiz_score.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["quiz_score"] = self.object
+        context['quiz_score'] = self.object
         return context
-
 
 class AdminTeacher(View):
     def get(self, request):
-        teachers = User.objects.filter(is_teacher=True)
+        teachers = User.objects.filter(is_teacher = True)
         context = {
             "teacher": teachers,
         }
-        return render(request, "templates/base/admin_teacher.html", context)
-
+        return render(request , "templates/base/teachers/admin_teacher.html" , context)
 
 class AdminStudent(View):
     def get(self, request):
-        student = User.objects.filter(is_student=True)
+        student = User.objects.filter(is_student = True)
         context = {
             "students": student,
         }
-        return render(request, "templates/base/admin_students.html", context)
-
+        return render(request , "templates/base/admin/admin_students.html", context)
 
 class CreateStudent(CreateView):
-    template_name = "templates/base/student_form.html"
+    template_name = 'templates/base/students/student_form.html'
     model = User
-    fields = ["username", "email", "password"]
+    fields = ['username', 'email', 'password']
 
     def post(self, request):
         super(CreateStudent, self).post(request)
-        username = request.POST["username"]
-        user = User.objects.get(username=username)
+        username = request.POST['username']
+        user = User.objects.get(username = username)
         user.is_student = True
         user.save()
-        return redirect("dashboard-admin")
-
+        return redirect('dashboard-admin')
 
 class UpdateStudent(UpdateView):
     model = User
-    template_name = "templates/base/student_form.html"
-    fields = ["username", "email", "password"]
-
+    template_name = 'templates/base/students/student_form.html'
+    fields = ['username', 'email', 'password']
 
 class DeleteStudent(DeleteView):
     model = User
-    template_name = "templates/base/delete_confirm.html"
-    success_url = "/dashboard_teacher"
+    template_name = 'templates/base/delete_confirm.html'
+    success_url = "/teacher"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Student"
         return context
 
-
 class UpdateTeacher(UpdateView):
     model = User
-    template_name = "templates/base/student_form.html"
-    fields = ["username", "email", "password"]
-
+    template_name = 'templates/base/students/student_form.html'
+    fields = ['username', 'email', 'password']
 
 class DeleteTeacher(DeleteView):
     model = User
-    template_name = "templates/base/delete_confirm.html"
-    success_url = "/dashboard_teacher"
+    template_name = 'templates/base/delete_confirm.html'
+    success_url = "/teacher"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Teacher"
         return context
 
-
 class CreateTeacher(CreateView):
-    template_name = "templates/base/teacher_form.html"
+    template_name = 'templates/base/teachers/teacher_form.html'
     model = User
-    fields = ["username", "email", "password"]
+    fields = ['username', 'email', 'password']
 
     def post(self, request):
         super(CreateTeacher, self).post(request)
-        username = request.POST["username"]
-        user = User.objects.get(username=username)
+        username = request.POST['username']
+        user = User.objects.get(username = username)
         user.is_teacher = True
         user.save()
-        return redirect("dashboard-admin")
-
+        return redirect('dashboard-admin')
 
 class StudentAdminQuizzes(View):
-    def get(self, request, pk=None):
-        user = User.objects.get(pk=pk)
-        quizzes = QuizScore.objects.filter(user_id=user)
-        context = {"quizzes": quizzes}
-        return render(request, "templates/base/student_admin_quizzes.html", context)
 
+    def get(self, request, pk = None):
+        user = User.objects.get(pk = pk)
+        quizzes = QuizScore.objects.filter(user_id = user)
+        context = {'quizzes': quizzes}
+        return render(request , 'templates/base/admin/student_admin_quizzes.html', context)
 
 class TeacherAdminQuizzes(View):
-    def get(self, request, pk=None):
-        user = User.objects.get(pk=pk)
-        quizzes = QuizScore.objects.filter(quiz_id__teacher=user)
-        context = {"quizzes": quizzes}
-        return render(request, "templates/base/teacher_admin_quizzes.html", context)
 
+    def get(self, request, pk = None):
+        user = User.objects.get(pk = pk)
+        quizzes = QuizScore.objects.filter(quiz_id__teacher = user)
+        context = {'quizzes': quizzes}
+        return render(request , 'templates/base/teachers/teacher_admin_quizzes.html' , context)
 
 class Stats(TemplateView):
-    template_name = "templates/base/statistics.html"
-
+    template_name = 'templates/base/admin/statistics.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         data = []
@@ -506,9 +520,9 @@ class Stats(TemplateView):
 
         new_data = []
         new_labels = []
-        queryset = QuizScore.objects.all().order_by("-score")
+        queryset = QuizScore.objects.all().order_by('-score')
 
-        teacher_queryset = Quiz.objects.filter(teacher__is_teacher=True)
+        teacher_queryset = Quiz.objects.filter(teacher__is_teacher = True)
 
         for score in queryset:
             labels.append(score.quiz_id.title)
@@ -522,5 +536,6 @@ class Stats(TemplateView):
         context["data"] = data
         context["new_labels"] = new_labels
         context["new_data"] = new_data
+
 
         return context
