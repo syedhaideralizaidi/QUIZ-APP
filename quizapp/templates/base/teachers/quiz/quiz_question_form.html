@@ -5,7 +5,7 @@
 <h4>Quiz Creation</h4>
 <hr>
 <br>
-<form method="post"  action="">
+<form method="post"  action="" id="form-container">
     {% csrf_token %}
     {{ form.as_p }}
     <div id="question-formset">
@@ -15,9 +15,8 @@
     <hr>
         {{ question_formset.management_form }}
         {% for form in question_formset %}
-            <div class="question-formset">
+            <div class="question-form">
                 {{ form.as_p }}
-               <button type="button" class= "remove-question btn btn-danger">X</button>
                 <hr>
             </div>
         {% endfor %}
@@ -33,29 +32,45 @@
 {% with question_formset.empty_form as empty_form %}
     <div id="empty-form" style="display:none">
         {{ empty_form.as_p }}
-        <button type="button" class="remove-question btn btn-danger">X</button>
+{#        <button type="button" class="remove-question btn btn-danger">X</button>#}
         <hr>
     </div>
 {% endwith %}
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        var formCount = {{ question_formset.total_form_count }};
-        console.log("Form Count:", formCount)
-        $('#add-question').click(function() {
-            var form = $('#empty-form').html().replace(/__prefix__/g, formCount);
-            $('#question-formset').append(form);
-            formCount++;
-                    console.log("Form Count in add:", formCount)
+            let questionForm = document.querySelectorAll(".question-form")
+            let container = document.querySelector("#form-container")
+            let addButton = document.querySelector("#add-question")
+            let totalForms = document.querySelector("#id_quiz_question-TOTAL_FORMS")
+            {#console.log({{ question_formset.management_form }})#}
+            console.log(container)
+            let formNum = questionForm.length-1
+            console.log(formNum)
+            addButton.addEventListener('click', addForm)
 
-        });
-        $(document).on('click', '.remove-question', function() {
+            function addForm(e) {
+                e.preventDefault()
+                let formRegex = RegExp(`quiz_question-(\\d){1}-`,'g')
+                console.log("Form regex",formRegex)
 
-            $(this).closest('.question-formset').remove();
-            formCount--;
-             console.log("Inside remove", formCount);
-        });
-    });
+                let newForm = questionForm[0].cloneNode(true)
+                console.log("new form", newForm)
+
+
+                formNum++
+
+                newForm.innerHTML = newForm.innerHTML.replace(formRegex, `quiz_question-${formNum}-`)
+                console.log("Updated form new form", newForm)
+                container.insertBefore(newForm, addButton)
+
+                totalForms.setAttribute('value', `${formNum+1}`)
+
+                console.log(formNum)
+
+            }
+
+
+
 </script>
 
 {% endblock %}

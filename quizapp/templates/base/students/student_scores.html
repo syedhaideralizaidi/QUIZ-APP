@@ -10,6 +10,7 @@
 <br>
 
   <div class="row">
+  {% if my_scores %}
       {% for scores in my_scores %}
     <div class="col-md-4 mb-4">
       <div class="card">
@@ -21,6 +22,9 @@
       </div>
     </div>
       {% endfor %}
+  {% else %}
+      <h3>No Scores yet</h3>
+  {% endif %}
 
 
   </div>

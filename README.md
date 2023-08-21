@@ -9,3 +9,5 @@ The QUIZ-APP is a comprehensive quiz application designed to enhance user engage
 
 - Now to run the application on wsgi mode write the command wheer manage.py file is placed
    python manage.py runserver
+
+- Deployed on 139.59.69.164

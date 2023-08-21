@@ -11,6 +11,7 @@
 <br>
 
   <div class="row">
+  {% if classrooms %}
       {% for class in classrooms %}
     <div class="col-md-5 mb-5">
       <div class="card">
@@ -34,6 +35,9 @@
       </div>
     </div>
       {% endfor %}
+    {% else %}
+      <h3>No Classrooms</h3>
+  {% endif %}
 
 
   </div>

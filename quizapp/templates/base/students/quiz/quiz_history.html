@@ -15,6 +15,7 @@
 </form>
 <br><br><br>
   <div class="row">
+  {% if my_quizzes %}
       {% for quiz in my_quizzes %}
     <div class="col-md-4 mb-4">
       <div class="card">
@@ -24,14 +25,14 @@
             <p class="card-text"><i>Your Score: </i> <strong> {{ quiz.score }}</strong></p>
             <p class="card-text"><i>Difficulty Level: </i> <strong> {{ quiz.quiz_id.difficulty_level }}</strong></p>
             <p class="card-text"><i>Category: </i> <strong> {{ quiz.quiz_id.category}}</strong></p>
-            <p class="card-text"><i>Status: </i> <strong> {{ quiz.status_pass}}</strong></p>
-
-
+            <p class="card-text"><i>Status: </i> <strong> {% if quiz.status_pass %}Pass{% else %}Failed{% endif %}</strong></p>
         </div>
       </div>
     </div>
       {% endfor %}
-
+  {% else %}
+  <h3>No Quizzes Given </h3>
+    {% endif %}
 
   </div>
 </div>
