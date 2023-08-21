@@ -1315,3 +1315,806 @@ In cron job at time: 2023-08-21 07:58:02.416044
 Cron job was called
 In cron job at time: 2023-08-21 07:59:02.404800
 Cron job was called
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:37:02.287039
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:38:01.974269
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:39:01.629290
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:40:02.275502
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:41:01.922451
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:42:01.576471
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:43:02.250295
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:44:01.894259
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:45:01.566454
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:46:02.231283
+Failed to complete cronjob at ('* */6 * * *', 'base.cron.attempt_quizzes', '>> /home/haider/PycharmProjects/quiz/quizapp/jobs.log')
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 218, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'quiz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django_crontab/crontab.py", line 145, in run_job
+    func(*job_args, **job_kwargs)
+  File "/home/haider/PycharmProjects/quiz/quizapp/base/cron.py", line 12, in attempt_quizzes
+    scheduled_time = quiz.quiz.created + timedelta(days=1)
+                     ^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/fields/related_descriptors.py", line 199, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/haider/PycharmProjects/quiz/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 737, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column base_quiz.created does not exist
+LINE 1: ..."question_numbers", "base_quiz"."required_score", "base_quiz...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "base_quiz.created_at".
+In cron job at time: 2023-08-21 13:47:01.901645
