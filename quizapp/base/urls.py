@@ -12,7 +12,7 @@ urlpatterns = [
     path("login/admin", views.login_admin, name="admin"),
     path("logout", views.logout_user, name="logout"),
     path("forgot", views.forgot, name="forgot-pw"),
-    path("reset_pw/<str:pk>/<str:encode>/", views.reset_password, name="reset-pw"),
+    path("reset/<str:pk>/<str:encode>/", views.reset_password, name="reset-pw"),
     path(
         "teacher",
         login_required(views.DashboardTeacher.as_view()),
