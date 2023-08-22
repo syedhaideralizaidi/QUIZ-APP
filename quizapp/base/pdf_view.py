@@ -3,7 +3,7 @@ import io
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from .models import QuizScore, Quiz
+from base.models import QuizScore, Quiz
 
 def pdf_report_generator(request, pk=None):
     """This is function generates the report when user clicks the generate button in statistics.
