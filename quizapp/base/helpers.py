@@ -13,7 +13,7 @@ def send_forgot_password_mail(user_obj, encode_pk):
     USERNAME = env("EMAIL_USERNAME")
     PASSWORD = env("EMAIL_PASSWORD")
     TEXT = f""" Hi, click on the link to reset password 
-    http://127.0.0.1:8000/reset_pw/{user_obj.id}/{encode_pk[0]}/"""
+    http://127.0.0.1:8000/reset/{user_obj.id}/{encode_pk[0]}/"""
     SUBJECT = "Reset your Password"
     message = "Subject: {}\n\n{}".format(SUBJECT, TEXT)
     context = ssl.create_default_context()
