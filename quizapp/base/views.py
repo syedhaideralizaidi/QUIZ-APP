@@ -1,6 +1,7 @@
 from base64 import urlsafe_b64encode
-from datetime import datetime
+from datetime import datetime , timezone , timedelta
 
+import jwt
 from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
@@ -45,7 +46,7 @@ def login_admin(request):
         print(user)
         if user is not None and password:
             print(user)
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             print("Current User", request.user)
             return redirect("/admin")
         else:
@@ -97,9 +98,17 @@ def login_student(request):
                 "title" : "No User, Sign Up first!" ,
                 "message" : "Please Sign Up before Login." ,
             }
-            return render(request , "templates/base/invalid.html" , context)
+            return render(request, "templates/base/invalid.html", context)
         if user is not None and user.is_student:
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            time_check = datetime.now(tz = timezone.utc) + timedelta(days = 2)
+            print("Time_Check", time_check)
+            jwt_payload = jwt.encode(
+                {"exp": time_check, "username": user.username},
+                "secret",
+                algorithm = "HS256"
+            )
+            print("JWT Token Encoded", jwt_payload)
             return redirect("/student")
         else:
             context = {
@@ -256,6 +265,8 @@ class UpdateStudentProfile(UpdateView):
     success_url = "/student"
 
     def get_object(self, queryset=None):
+
+        print(self.request.META)
         pk = self.kwargs["pk"]
         try:
             return User.objects.get(pk=pk)

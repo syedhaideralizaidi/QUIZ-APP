@@ -7,7 +7,7 @@
 <div class="container">
 <hr>
     <center>
-        <h3 class="mb-4" style="font-size: 2.5rem; color: black; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">Welcome to our Learning Hub</h3>    <hr></center>
+        <h3 class="mb-4" id="head" style="font-size: 2.5rem; color: black; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">Welcome to our Learning Hub</h3>    <hr></center>
 <br>
 
   <div class="row">
@@ -88,9 +88,13 @@
 
 {% endblock %}
 
-
-{% block end_script %}
-    <script>
-
-    </script>
-{% endblock end_script %}
+{##}
+{#{% block end_script %}#}
+{#    <script>#}
+{#        var socket = new WebSocket('ws://127.0.0.1:8000/ws/sc/'+ {{ request.user.pk }});#}
+{#        socket.onmessage= function (event){#}
+{#            document.querySelector('#head').innerText = event.data;#}
+{#        }#}
+{#    </script>#}
+{##}
+{#{% endblock end_script %}#}
